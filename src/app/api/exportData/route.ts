@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     // 🔹 スプレッドシートからデータを取得
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SHEET_ID,
-      range: "TimeSheet!A:I", // 🔹 取得範囲を明確に指定
+      range: "TimeSheet!A:J", // 🔹 取得範囲を明確に指定
     });
 
     const rows = response.data.values || [];
@@ -38,8 +38,8 @@ export async function POST(req: Request) {
     const headers = rows[0];
     
     const data = rows.slice(1).filter(row => {
-        const rowStart = new Date(row[3]); // `start` (D列) を `Date` に変換
-        const rowEnd = new Date(row[4]);   // `end` (E列) を `Date` に変換
+        const rowStart = new Date(row[4]); // `start` (E列) を `Date` に変換
+        const rowEnd = new Date(row[5]);   // `end` (F列) を `Date` に変換
       
         // ✅ `YYYY-MM-DD` の文字列として比較
         const rowStartDate = rowStart.toISOString().split("T")[0]; // `YYYY-MM-DD` 形式に変換

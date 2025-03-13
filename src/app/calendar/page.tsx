@@ -65,12 +65,14 @@ export default function CalendarPage() {
 
     try {
       const userId = localStorage.getItem("userId") || "";
+      const userName = localStorage.getItem("userName") || "Unknown";
       const response = await fetch("/api/saveEvent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           id: selectedEvent?.id || "",
           userId,
+          userName,
           start: selectedRange.start.toISOString(),
           end: selectedRange.end.toISOString(),
           engagement: data.engagement,
@@ -128,7 +130,8 @@ export default function CalendarPage() {
   
     setSelectedEvent({
       id: clickInfo.event.id || "",
-      userId: clickInfo.event.extendedProps?.userId || "", // ✅ `?.` を使用して安全に取得
+      userId: clickInfo.event.extendedProps?.userId || "",
+      userName: clickInfo.event.extendedProps?.userName || "Unknown",
       engagement: clickInfo.event.title.split(" - ")[0] || "",
       activity: clickInfo.event.title.split(" - ")[1] || "",
       location: clickInfo.event.extendedProps?.details?.split(" / ")[0] || "",
@@ -239,6 +242,7 @@ export default function CalendarPage() {
     setIsOpen(true);
   };
 
+  
   
   // ✅ 初回読み込み時にスプレッドシートのデータを取得
   useEffect(() => {

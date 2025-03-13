@@ -18,7 +18,7 @@ export async function GET() {
     const sheets = google.sheets({ version: "v4", auth });
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: SHEET_ID,
-      range: "TimeSheet!A:I", // ✅ A列 (DataId) から I列 (Details) まで取得
+      range: "TimeSheet!A:J", // ✅ A列 (DataId) から I列 (Details) まで取得
     });
 
     const rows = response.data.values || [];
@@ -27,12 +27,13 @@ export async function GET() {
     const formattedData = rows.slice(1).map((row) => ({
       id: row[0],        // DataId
       userId: row[2],    // UserID
-      start: row[3],     // Start
-      end: row[4],       // End
-      engagement: row[5],// Engagement
-      activity: row[6],  // Activity
-      location: row[7],  // Location
-      details: row[8],   // Details
+      userName: row[3],  // UserName
+      start: row[4],     // Start
+      end: row[5],       // End
+      engagement: row[6],// Engagement
+      activity: row[7],  // Activity
+      location: row[8],  // Location
+      details: row[9],   // Details
     }));
 
     return NextResponse.json(formattedData);

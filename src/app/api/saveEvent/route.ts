@@ -1,6 +1,7 @@
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
 
+
 const SHEET_ID = process.env.SHEET_ID || "";
 
 export async function POST(req: Request) {
@@ -26,14 +27,26 @@ export async function POST(req: Request) {
       range: "TimeSheet!A:A", // A列（DataID）を取得
     });
 
-    const newId = (sheetData.data.values?.length || 1).toString(); // IDを計算
+    const existingIds = sheetData.data.values?.slice(1).map(row => parseInt(row[0], 10)).filter(num => !isNaN(num)) || [];
+    const newId = existingIds.length > 0 ? (Math.max(...existingIds) + 1).toString() : "1";
+    
+
+    // ✅ Users シートから `UserID` に対応する `User_Name` を取得
+    const usersResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId: SHEET_ID,
+      range: "Users!A:E", // A列がUserID、E列がUser_Name
+    });
+    
+    const usersData = usersResponse.data.values || [];
+    const userRow = usersData.find(row => row[0] === userId);
+    const userName = userRow ? userRow[4] : "Unknown"; 
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SHEET_ID,
-      range: "TimeSheet!A:I", // A列（DataID）を追加
+      range: "TimeSheet!A:J", // A列（DataID）を追加
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [[newId, now, userId, start, end, engagement, activity, location, details]],
+        values: [[newId, now, userId, userName,start, end, engagement, activity, location, details]],
       },
     });
 

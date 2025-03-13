@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       // スプレッドシートのデータ取得
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId: SHEET_ID,
-        range: "TimeSheet!A:I",
+        range: "TimeSheet!A:J",
       });
   
       const rows = response.data.values || [];

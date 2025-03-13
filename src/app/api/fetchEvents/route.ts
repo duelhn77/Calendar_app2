@@ -24,7 +24,7 @@ export async function GET() {
       const sheets = google.sheets({ version: "v4", auth });
       const response = await sheets.spreadsheets.values.get({
         spreadsheetId: SHEET_ID,
-        range: "Timesheet!A:G",
+        range: "Timesheet!A:J",
       });
   
       const rows = response.data.values || [];

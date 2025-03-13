@@ -37,7 +37,7 @@ export async function POST(req: Request) {
   
       await sheets.spreadsheets.values.update({
         spreadsheetId: SHEET_ID,
-        range: `TimeSheet!D${rowIndex + 1}:I${rowIndex + 1}`, // Start から Details までを更新
+        range: `TimeSheet!E${rowIndex + 1}:J${rowIndex + 1}`, // Start から Details までを更新
         valueInputOption: "USER_ENTERED",
         requestBody: {
           values: [[start, end, engagement, activity, location, details]],
