@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"; // ✅ NextResponse をインポー�
 
 const SHEET_ID = process.env.SHEET_ID; // 環境変数からスプレッドシートIDを取得
 
+
 export async function POST(req: Request) {
     try {
       const { email, password } = await req.json();
