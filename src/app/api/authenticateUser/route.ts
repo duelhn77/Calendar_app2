@@ -1,6 +1,5 @@
 import { google } from "googleapis";
 import { NextResponse } from "next/server"; // ✅ NextResponse をインポート
-import path from "path"
 
 const SHEET_ID = process.env.SHEET_ID; // 環境変数からスプレッドシートIDを取得
 
