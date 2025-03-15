@@ -236,6 +236,16 @@ button:hover {
   cursor: pointer;
 }
 
+.pw-change-button {
+  width: 80%;
+  padding: 10px;
+  background: green;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .export-button {
   width: 80%;
   padding: 10px;

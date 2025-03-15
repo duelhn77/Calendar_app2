@@ -249,6 +249,17 @@ button:hover {
   cursor: pointer;
 }
 
+/* ✅ PW変更ボタン */
+.pw-change-button {
+  width: 80%;
+  padding: 10px;
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 /* ✅ ログアウトボタン */
 .export-button {
   width: 80%;

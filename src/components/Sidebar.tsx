@@ -34,6 +34,10 @@ export default function Sidebar() {
     router.push("/login");
   };
 
+  const handleChangePassword = () => {
+    router.push("/change-password");
+  };
+
   const handleExport = async (startDate: string, endDate: string, format: string) => {
     console.log(`📥 エクスポート開始: ${startDate} ～ ${endDate}, フォーマット: ${format}`);
   
@@ -95,6 +99,10 @@ export default function Sidebar() {
         <div className="menu-popup">
           <button className="logout-button" onClick={handleLogout}>
             ログアウト
+          </button>
+
+          <button className="pw-change-button" onClick={handleChangePassword} style={{ marginTop: "10px" }}>
+            🔑 PW変更
           </button>
 
           {/* 🔹 管理者のみエクスポートボタンを表示 */}
