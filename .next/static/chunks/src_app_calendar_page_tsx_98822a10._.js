@@ -11,7 +11,8 @@
     "static/chunks/node_modules_react-icons_fa_index_esm_cf819b17.js",
     "static/chunks/node_modules_react-icons_lib_esm_44027767._.js",
     "static/chunks/node_modules_f52f0043._.js",
-    "static/chunks/src_2e7cddfa._.js"
+    "static/chunks/src_2e7cddfa._.js",
+    "static/chunks/src_styles_calendar_f418e455.css"
   ],
   "source": "dynamic"
 });

@@ -254,10 +254,10 @@ __turbopack_context__.s({
     "POST": (()=>POST)
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$googleapis$2f$build$2f$src$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/googleapis/build/src/index.js [app-route] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)"); // ✅ NextResponse をインポート
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
 ;
 ;
-const SHEET_ID = process.env.SHEET_ID; // 環境変数からスプレッドシートIDを取得
+const SHEET_ID = process.env.SHEET_ID || "";
 async function POST(req) {
     try {
         const { email, password } = await req.json();
@@ -276,15 +276,34 @@ async function POST(req) {
             version: "v4",
             auth
         });
+        // ✅ ヘッダー（1行目）を取得して「UserID」「Email」「Password」の列を特定
+        const headerRes = await sheets.spreadsheets.values.get({
+            spreadsheetId: SHEET_ID,
+            range: "Users!1:1"
+        });
+        const headers = headerRes.data.values?.[0] || []; // 1行目のデータ
+        const userIdColIndex = headers.indexOf("UserID"); // UserID の位置
+        const emailColIndex = headers.indexOf("Email"); // Email の位置
+        const passwordColIndex = headers.indexOf("Password"); // Password の位置
+        if (userIdColIndex === -1 || emailColIndex === -1 || passwordColIndex === -1) {
+            throw new Error("❌ 'UserID', 'Email', 'Password' のいずれかの列が見つかりません！");
+        }
+        // ✅ 取得する列範囲を動的に設定
+        const lastColIndex = Math.max(userIdColIndex, emailColIndex, passwordColIndex); // 一番右の列
+        const lastCol = String.fromCharCode(65 + lastColIndex); // A=65, B=66...
+        console.log(`🔹 取得する範囲: Users!A:${lastCol}`);
+        // ✅ Users シートの全データを取得（A列から最右列まで）
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: SHEET_ID,
-            range: "Users!A:C"
+            range: `Users!A:${lastCol}`
         });
         const rows = response.data.values || [];
-        const user = rows.find((row)=>row[1] === email && row[2] === password);
-        if (user) {
+        // ✅ 入力された Email & Password に一致するユーザーを検索
+        const userRow = rows.find((row)=>row[emailColIndex] === email && row[passwordColIndex] === password);
+        if (userRow) {
+            const userId = userRow[userIdColIndex]; // ✅ ユーザーIDを取得
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                userId: user[0]
+                userId
             });
         } else {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -295,7 +314,7 @@ async function POST(req) {
         }
     } catch (error) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: error
+            error: error.message
         }, {
             status: 500
         });

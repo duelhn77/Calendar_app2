@@ -32,9 +32,18 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
             const fetchEngagements = {
                 "Modal.useEffect.fetchEngagements": async ()=>{
                     try {
-                        const response = await fetch("/api/fetchEngagements");
+                        const userId = ("TURBOPACK compile-time truthy", 1) ? localStorage.getItem("userId") : ("TURBOPACK unreachable", undefined);
+                        if (!userId) {
+                            console.error("❌ ユーザーIDが取得できません！");
+                            return;
+                        }
+                        const response = await fetch(`/api/fetchEngagements?userId=${encodeURIComponent(userId)}`);
+                        if (!response.ok) throw new Error("エンゲージメントの取得に失敗しました");
                         const data = await response.json();
-                        console.log("✅ エンゲージメントリスト:", data);
+                        if (!Array.isArray(data)) {
+                            console.error("❌ APIのレスポンスが配列ではありません:", data);
+                            return;
+                        }
                         const formattedEngagements = data.map({
                             "Modal.useEffect.fetchEngagements.formattedEngagements": (eng, index)=>({
                                     id: eng.id || index.toString(),
@@ -147,26 +156,26 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "作業情報を入力"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 122,
+                    lineNumber: 134,
                     columnNumber: 9
                 }, this),
                 selectedRange && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                     children: [
                         "📅 ",
-                        selectedRange.start.toLocaleTimeString("ja-JP", {
+                        new Date(selectedRange.start.getTime() - 9 * 60 * 60 * 1000).toLocaleTimeString("ja-JP", {
                             hour: "2-digit",
                             minute: "2-digit"
                         }),
                         "～ ",
-                        selectedRange.end.toLocaleTimeString("ja-JP", {
+                        new Date(selectedRange.end.getTime() - 9 * 60 * 60 * 1000).toLocaleTimeString("ja-JP", {
                             hour: "2-digit",
                             minute: "2-digit"
                         })
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 124,
-                    columnNumber: 11
+                    lineNumber: 136,
+                    columnNumber: 10
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     style: {
@@ -177,12 +186,12 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             children: "エンゲージメント"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 132,
+                            lineNumber: 145,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 132,
+                            lineNumber: 145,
                             columnNumber: 34
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$select$2f$dist$2f$react$2d$select$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"], {
@@ -206,13 +215,13 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             placeholder: "エンゲージメントを選択"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 133,
+                            lineNumber: 146,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 131,
+                    lineNumber: 144,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -224,12 +233,12 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             children: "Activity"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 159,
+                            lineNumber: 172,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 159,
+                            lineNumber: 172,
                             columnNumber: 32
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$select$2f$dist$2f$react$2d$select$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"], {
@@ -256,20 +265,20 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             placeholder: "Activityを選択"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 160,
+                            lineNumber: 173,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 158,
+                    lineNumber: 171,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                     children: "作業場所"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 184,
+                    lineNumber: 197,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$select$2f$dist$2f$react$2d$select$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"], {
@@ -290,7 +299,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 185,
+                    lineNumber: 198,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -302,7 +311,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "作業内容"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 204,
+                    lineNumber: 217,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -316,7 +325,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 208,
+                    lineNumber: 221,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -353,7 +362,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: selectedEvent ? "更新" : "追加"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 218,
+                    lineNumber: 231,
                     columnNumber: 9
                 }, this),
                 selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -369,7 +378,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "削除"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 258,
+                    lineNumber: 271,
                     columnNumber: 3
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -377,18 +386,18 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "キャンセル"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 268,
+                    lineNumber: 281,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/Modal.tsx",
-            lineNumber: 121,
+            lineNumber: 133,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/Modal.tsx",
-        lineNumber: 120,
+        lineNumber: 132,
         columnNumber: 5
     }, this);
 }
@@ -773,6 +782,7 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 function CalendarPage() {
     _s();
     // const [isAuthenticated, setIsAuthenticated] = useState(
@@ -784,6 +794,7 @@ function CalendarPage() {
     const [selectedRange, setSelectedRange] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [selectedEvent, setSelectedEvent] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [events, setEvents] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    const [engagements, setEngagements] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     // ✅ Google Sheets から予定データを取得
     const fetchEventsFromSheets = async ()=>{
         try {
@@ -797,15 +808,22 @@ function CalendarPage() {
             const data = await response.json();
             console.log("✅ /api/getEvents のレスポンス:", data);
             setEvents(data.filter((event)=>event.userId === userId) // ✅ ログインユーザーのデータのみ取得
-            .map((event)=>({
+            .map((event)=>{
+                const engagement = engagements.find((e)=>e.name === event.engagement) || {
+                    color: "#3788d8"
+                };
+                return {
                     id: event.id,
                     title: `${event.engagement} - ${event.activity}`,
                     start: new Date(event.start),
                     end: new Date(event.end),
+                    backgroundColor: engagement?.color || "#3788d8",
+                    borderColor: engagement?.color || "#3788d8",
                     extendedProps: {
                         details: `${event.location} / ${event.details}`
                     }
-                })));
+                };
+            }));
         } catch (error) {
             console.error("❌ スプレッドシートからのデータ取得エラー:", error);
         }
@@ -980,18 +998,64 @@ function CalendarPage() {
         setSelectedEvent(null);
         setIsOpen(true);
     };
+    // ✅ スプレッドシートから Engagement を取得
+    const fetchEngagements = async ()=>{
+        try {
+            const userId = ("TURBOPACK compile-time truthy", 1) ? localStorage.getItem("userId") : ("TURBOPACK unreachable", undefined);
+            if (!userId) {
+                console.error("❌ ユーザーIDが取得できません！");
+                return;
+            }
+            const response = await fetch(`/api/fetchEngagements?userId=${encodeURIComponent(userId)}`);
+            if (!response.ok) throw new Error("エンゲージメントの取得に失敗しました");
+            const data = await response.json();
+            if (!Array.isArray(data)) {
+                console.error("❌ APIのレスポンスが配列ではありません:", data);
+                return;
+            }
+            setEngagements(data);
+        } catch (error) {
+            console.error("❌ エンゲージメントの取得エラー:", error);
+        }
+    };
+    // ✅ 初回レンダリング時に fetchEngagements を実行**
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CalendarPage.useEffect": ()=>{
+            fetchEngagements();
+        }
+    }["CalendarPage.useEffect"], []); // 🔹 依存配列を `[]` にして初回のみ実行
+    // ✅ engagements が更新された後に fetchEventsFromSheets を実行**
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CalendarPage.useEffect": ()=>{
+            if (engagements.length > 0) {
+                fetchEventsFromSheets();
+            }
+        }
+    }["CalendarPage.useEffect"], [
+        engagements
+    ]); // 🔹 `engagements` が更新されたときに実行
+    // ✅ エンゲージメントを取得したあとにイベントも取得
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "CalendarPage.useEffect": ()=>{
+            if (engagements.length > 0) {
+                fetchEventsFromSheets();
+            }
+        }
+    }["CalendarPage.useEffect"], [
+        engagements
+    ]);
     // ✅ 初回読み込み時にスプレッドシートのデータを取得
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "CalendarPage.useEffect": ()=>{
             if (!localStorage.getItem("isAuthenticated")) {
                 router.push("/login");
             } else {
-                fetchEventsFromSheets();
+                fetchEngagements();
             }
         }
     }["CalendarPage.useEffect"], [
         router
-    ]);
+    ]); // 🔹 `router` に依存するよう修正
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         style: {
             display: "flex"
@@ -999,7 +1063,7 @@ function CalendarPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                 fileName: "[project]/src/app/calendar/page.tsx",
-                lineNumber: 258,
+                lineNumber: 315,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1015,8 +1079,10 @@ function CalendarPage() {
                             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$fullcalendar$2f$interaction$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"]
                         ],
                         initialView: "timeGridWeek",
-                        slotMinTime: "06:00:00",
-                        slotMaxTime: "30:00:00",
+                        slotMinTime: "00:00:00",
+                        slotMaxTime: "24:00:00",
+                        scrollTime: "09:00:00" // デフォルト表示を 9:00 に
+                        ,
                         locale: "ja",
                         timeZone: "Asia/Tokyo",
                         slotDuration: "00:15:00",
@@ -1037,10 +1103,11 @@ function CalendarPage() {
                             left: "prev,next today",
                             center: "title",
                             right: "timeGridWeek,timeGridDay"
-                        }
+                        },
+                        height: "900px" // ✅ 高さを固定
                     }, void 0, false, {
                         fileName: "[project]/src/app/calendar/page.tsx",
-                        lineNumber: 260,
+                        lineNumber: 317,
                         columnNumber: 9
                     }, this),
                     isOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$Modal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Modal"], {
@@ -1053,23 +1120,23 @@ function CalendarPage() {
                         selectedEvent: selectedEvent
                     }, void 0, false, {
                         fileName: "[project]/src/app/calendar/page.tsx",
-                        lineNumber: 285,
+                        lineNumber: 353,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/calendar/page.tsx",
-                lineNumber: 259,
+                lineNumber: 316,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/calendar/page.tsx",
-        lineNumber: 257,
+        lineNumber: 314,
         columnNumber: 5
     }, this);
 }
-_s(CalendarPage, "Npk6ei7DnS+MkmqNg7IggHy/M9s=", false, function() {
+_s(CalendarPage, "CTLWG3S4cozbLosHkCQnWQSeZR0=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];

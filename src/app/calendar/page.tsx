@@ -9,7 +9,7 @@ import { EventData } from "@/types/EventData";
 import { Modal } from "@/components/Modal";
 import Sidebar from "@/components/Sidebar";
 import {  EventResizeDoneArg } from "@fullcalendar/interaction"; 
-
+import "@/styles/calendar.css"; 
 
 export default function CalendarPage() {
   // const [isAuthenticated, setIsAuthenticated] = useState(
@@ -22,6 +22,7 @@ export default function CalendarPage() {
   const [selectedRange, setSelectedRange] = useState<{ start: Date; end: Date } | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
   const [events, setEvents] = useState([]);
+  const [engagements, setEngagements] = useState<{ name: string; color: string }[]>([]);
 
   // ✅ Google Sheets から予定データを取得
   const fetchEventsFromSheets = async () => {
@@ -38,23 +39,31 @@ export default function CalendarPage() {
       const data = await response.json();
       console.log("✅ /api/getEvents のレスポンス:", data);
 
+      
       setEvents(
         data
           .filter((event: EventData) => event.userId === userId) // ✅ ログインユーザーのデータのみ取得
-          .map((event: EventData) => ({
-            id: event.id, // DataId
-            title: `${event.engagement} - ${event.activity}`,
-            start: new Date(event.start),
-            end: new Date(event.end),
-            extendedProps: {
-              details: `${event.location} / ${event.details}`,
-            },
-          }))
+          .map((event: EventData) => {
+            const engagement = engagements.find((e) => e.name === event.engagement) || { color: "#3788d8" };
+            return{
+              id: event.id, // DataId
+              title: `${event.engagement} - ${event.activity}`,
+              start: new Date(event.start),
+              end: new Date(event.end),
+              backgroundColor: engagement?.color || "#3788d8", // ✅ スプレッドシートの色を適用
+              borderColor: engagement?.color || "#3788d8",
+              extendedProps: {
+                details: `${event.location} / ${event.details}`,
+              },
+            };
+          })
       );
     } catch (error) {
       console.error("❌ スプレッドシートからのデータ取得エラー:", error);
     }
   };
+
+  
 
   // ✅ 予定をスプレッドシートに保存
   const handleAddEvent = async (data: EventData): Promise<void> => {
@@ -242,16 +251,64 @@ export default function CalendarPage() {
     setIsOpen(true);
   };
 
+
+
+  // ✅ スプレッドシートから Engagement を取得
+  const fetchEngagements = async () => {
+    try {
+      const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+      if (!userId) {
+        console.error("❌ ユーザーIDが取得できません！");
+        return;
+      }
   
+      const response = await fetch(`/api/fetchEngagements?userId=${encodeURIComponent(userId)}`);
+      if (!response.ok) throw new Error("エンゲージメントの取得に失敗しました");
   
-  // ✅ 初回読み込み時にスプレッドシートのデータを取得
+      const data = await response.json();
+      if (!Array.isArray(data)) {
+        console.error("❌ APIのレスポンスが配列ではありません:", data);
+        return;
+      }
+  
+      setEngagements(data);
+    } catch (error) {
+      console.error("❌ エンゲージメントの取得エラー:", error);
+    }
+  };
+  
+    
+
+  // ✅ 初回レンダリング時に fetchEngagements を実行**
   useEffect(() => {
-    if (!localStorage.getItem("isAuthenticated")) {
-      router.push("/login");
-    } else {
+    fetchEngagements();
+  }, []); // 🔹 依存配列を `[]` にして初回のみ実行
+
+  // ✅ engagements が更新された後に fetchEventsFromSheets を実行**
+  useEffect(() => {
+    if (engagements.length > 0) {
       fetchEventsFromSheets();
     }
-  }, [router]);
+  }, [engagements]); // 🔹 `engagements` が更新されたときに実行
+
+
+// ✅ エンゲージメントを取得したあとにイベントも取得
+useEffect(() => {
+  if (engagements.length > 0) {
+    fetchEventsFromSheets();
+  }
+}, [engagements]);
+
+
+  
+ // ✅ 初回読み込み時にスプレッドシートのデータを取得
+useEffect(() => {
+  if (!localStorage.getItem("isAuthenticated")) {
+    router.push("/login");
+  } else {
+    fetchEngagements();
+  }
+}, [router]); // 🔹 `router` に依存するよう修正
 
   return (
     <div style={{ display: "flex" }}>
@@ -260,8 +317,9 @@ export default function CalendarPage() {
         <FullCalendar
           plugins={[timeGridPlugin, interactionPlugin]}
           initialView="timeGridWeek"
-          slotMinTime="06:00:00"
-          slotMaxTime="30:00:00"
+          slotMinTime="00:00:00"
+          slotMaxTime="24:00:00"
+          scrollTime="09:00:00"   // デフォルト表示を 9:00 に
           locale="ja"
           timeZone="Asia/Tokyo"
           slotDuration="00:15:00"
@@ -279,6 +337,16 @@ export default function CalendarPage() {
             center: "title",
             right: "timeGridWeek,timeGridDay",
           }}
+          height="900px" // ✅ 高さを固定
+          // contentHeight="1000px" // ✅ 自動調整
+          // views={{
+          //   timeGridWeek: {
+          //     slotDuration: "00:15:00", 
+          //   },
+          //   timeGridDay: {
+          //     slotDuration: "00:15:00",
+          //   }
+          // }}
         />
 
         {isOpen && (
@@ -296,3 +364,4 @@ export default function CalendarPage() {
     </div>
   );
 }
+

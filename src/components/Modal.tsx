@@ -32,25 +32,37 @@ export function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedR
   useEffect(() => {
     const fetchEngagements = async () => {
       try {
-        const response = await fetch("/api/fetchEngagements");
+        const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
+        if (!userId) {
+          console.error("❌ ユーザーIDが取得できません！");
+          return;
+        }
+  
+        const response = await fetch(`/api/fetchEngagements?userId=${encodeURIComponent(userId)}`);
+        if (!response.ok) throw new Error("エンゲージメントの取得に失敗しました");
+  
         const data = await response.json();
-        console.log("✅ エンゲージメントリスト:", data);
-
+        if (!Array.isArray(data)) {
+          console.error("❌ APIのレスポンスが配列ではありません:", data);
+          return;
+        }
+  
         const formattedEngagements = data.map((eng: { id?: string; name: string }, index: number) => ({
           id: eng.id || index.toString(),
           name: eng.name,
         }));
-
+  
         setEngagements(formattedEngagements);
       } catch (error) {
         console.error("❌ エンゲージメントの取得エラー:", error);
       }
     };
-
+  
     if (isOpen) {
       fetchEngagements();
     }
   }, [isOpen]);
+  
 
 
 // ✅ Activities を取得
@@ -121,11 +133,12 @@ useEffect(() => {
       <div className="modal-content">
         <h1>作業情報を入力</h1>
         {selectedRange && (
-          <p>
-            📅 {selectedRange.start.toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} 
-            ～ {selectedRange.end.toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })}
-          </p>
+         <p>
+          📅 {new Date(selectedRange.start.getTime() - 9 * 60 * 60 * 1000).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} 
+           ～ {new Date(selectedRange.end.getTime() - 9 * 60 * 60 * 1000).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })}
+         </p>
         )}
+
 
          {/* エンゲージメント選択 */}
         <div style={{ marginBottom: "10px" }}>

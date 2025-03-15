@@ -284,14 +284,29 @@ async function GET(req) {
             version: "v4",
             auth
         });
-        // 🔹 UsersシートのA列（userId）とD列（役職）を取得
+        // ✅ 1行目のヘッダーを取得し、UserIDとUserRoleの列を特定
+        const headerRes = await sheets.spreadsheets.values.get({
+            spreadsheetId: SHEET_ID,
+            range: "Users!1:1"
+        });
+        const headers = headerRes.data.values?.[0] || []; // 1行目のデータ
+        const userIdColIndex = headers.indexOf("UserID"); // `UserID` の列を特定
+        const userRoleColIndex = headers.indexOf("UserRole"); // `UserRole` の列を特定
+        if (userIdColIndex === -1 || userRoleColIndex === -1) {
+            throw new Error("❌ 'UserID' または 'UserRole' の列が見つかりません！");
+        }
+        // ✅ Usersシートのデータを取得（A列から最右の列まで）
+        const lastColIndex = Math.max(userIdColIndex, userRoleColIndex);
+        const lastCol = String.fromCharCode(65 + lastColIndex); // A=65, B=66...
+        console.log(`🔹 取得する範囲: Users!A:${lastCol}`);
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: SHEET_ID,
-            range: "Users!A:D"
+            range: `Users!A:${lastCol}`
         });
         const rows = response.data.values || [];
-        const userRow = rows.find((row)=>row[0] === userId);
-        if (!userRow || !userRow[3]) {
+        // ✅ `userId` に一致するユーザーの `UserRole` を取得
+        const userRow = rows.find((row)=>row[userIdColIndex] === userId);
+        if (!userRow || !userRow[userRoleColIndex]) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 error: "ユーザーが見つかりません"
             }, {
@@ -299,7 +314,7 @@ async function GET(req) {
             });
         }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            role: userRow[3]
+            role: userRow[userRoleColIndex]
         }, {
             status: 200
         });
