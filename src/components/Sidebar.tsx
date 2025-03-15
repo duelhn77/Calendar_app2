@@ -1,10 +1,11 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { FaCog } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import ExportModal from "./ExportModal";
 
 export default function Sidebar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [userRole, setUserRole] = useState("");
   const router = useRouter();
@@ -65,21 +66,29 @@ export default function Sidebar() {
       console.error("❌ エクスポートエラー:", error);
     }
   };
-  
-  
 
   return (
     <div className="sidebar">
       <h1 className="sidebar-title">Haleiwaシステム</h1>
 
       <ul>
-        <li>🚀未実装</li>
-        <li>🚀未実装</li>
-        <li>🚀未実装</li>
-      </ul>
-      
-      
+        <li onClick={() => setIsReportOpen(!isReportOpen)}>
+          レポート
+        </li>
 
+        {isReportOpen && userRole === "管理者" && (
+          <button
+            className="export-button"
+            onClick={() => setIsExportOpen(true)}
+            style={{ marginTop: "10px" }}
+          >
+            📤 Export
+          </button>
+        )}
+
+        {/* <li>🚀未実装</li>
+        <li>🚀未実装</li> */}
+      </ul>
 
       {isExportOpen && (
         <ExportModal 
@@ -88,7 +97,6 @@ export default function Sidebar() {
           onExport={handleExport}
         />
       )}
-    
 
       <div className="settings" onClick={() => setIsMenuOpen(!isMenuOpen)}>
         <FaCog size={20} />
@@ -97,25 +105,15 @@ export default function Sidebar() {
 
       {isMenuOpen && (
         <div className="menu-popup">
-          <button className="logout-button" onClick={handleLogout}>
-            ログアウト
-          </button>
-
           <button className="pw-change-button" onClick={handleChangePassword} style={{ marginTop: "10px" }}>
             🔑 PW変更
           </button>
 
-          {/* 🔹 管理者のみエクスポートボタンを表示 */}
-          {userRole === "管理者" && (
-           <button
-             className="export-button"
-             onClick={() => setIsExportOpen(true)}style={{ marginTop: "10px" }}>
-             📤 Export
-           </button>
-          )}
+          <button className="logout-button" onClick={handleLogout} style={{ marginTop: "10px" }}>
+            ログアウト
+          </button>
         </div>
       )}
     </div>
   );
 }
-
