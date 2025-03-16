@@ -8,7 +8,10 @@
   "/api/getEvents/route": "app/api/getEvents/route.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/change-password/page": "app/change-password/page.js",
-  "/api/changePassword/route": "app/api/changePassword/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/exportData/route": "app/api/exportData/route.js"
+  "/api/fetchLocations/route": "app/api/fetchLocations/route.js",
+  "/api/fetchActivities/route": "app/api/fetchActivities/route.js",
+  "/api/saveEvent/route": "app/api/saveEvent/route.js",
+  "/api/exportData/route": "app/api/exportData/route.js",
+  "/api/deleteEvent/route": "app/api/deleteEvent/route.js",
+  "/api/updateEvent/route": "app/api/updateEvent/route.js"
 }

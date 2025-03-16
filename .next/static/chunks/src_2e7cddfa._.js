@@ -428,8 +428,18 @@ const ExportModal = ({ isOpen, onClose, onExport })=>{
     _s();
     const [startDate, setStartDate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [endDate, setEndDate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
-    const [format] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("xlsx");
+    const [format, setFormat] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("xlsx");
+    const [errorMessage, setErrorMessage] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(""); // 修正箇所: エラーメッセージ用の state
     if (!isOpen) return null;
+    const handleExport = async ()=>{
+        setErrorMessage(""); // 修正箇所: エラーメッセージをリセット
+        const success = await onExport(startDate, endDate, format); // 修正箇所: `onExport` の結果を取得
+        if (success) {
+            onClose(); // 修正箇所: エクスポート成功時にモーダルを閉じる
+        } else {
+            setErrorMessage("対象期間に該当データはありません"); // 修正箇所: エラー時にメッセージを表示
+        }
+    };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -437,7 +447,7 @@ const ExportModal = ({ isOpen, onClose, onExport })=>{
                 onClick: onClose
             }, void 0, false, {
                 fileName: "[project]/src/components/ExportModal.tsx",
-                lineNumber: 20,
+                lineNumber: 32,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -448,14 +458,14 @@ const ExportModal = ({ isOpen, onClose, onExport })=>{
                         children: "📥 データをエクスポート"
                     }, void 0, false, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 24,
+                        lineNumber: 36,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                         children: "開始日"
                     }, void 0, false, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 26,
+                        lineNumber: 38,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -464,14 +474,14 @@ const ExportModal = ({ isOpen, onClose, onExport })=>{
                         onChange: (e)=>setStartDate(e.target.value)
                     }, void 0, false, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 27,
+                        lineNumber: 39,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                         children: "終了日"
                     }, void 0, false, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 29,
+                        lineNumber: 41,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -480,14 +490,14 @@ const ExportModal = ({ isOpen, onClose, onExport })=>{
                         onChange: (e)=>setEndDate(e.target.value)
                     }, void 0, false, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 30,
+                        lineNumber: 42,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                         children: "ファイル形式"
                     }, void 0, false, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 32,
+                        lineNumber: 44,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$select$2f$dist$2f$react$2d$select$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"], {
@@ -501,27 +511,36 @@ const ExportModal = ({ isOpen, onClose, onExport })=>{
                                 label: "CSV (.csv)"
                             }
                         ],
-                        styles: {
-                            menuList: (provided)=>({
-                                    ...provided,
-                                    maxHeight: "150px"
-                                })
-                        }
+                        value: {
+                            value: format,
+                            label: format === "xlsx" ? "Excel (.xlsx)" : "CSV (.csv)"
+                        },
+                        onChange: (selectedOption)=>setFormat(selectedOption?.value || "xlsx")
                     }, void 0, false, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 33,
+                        lineNumber: 45,
                         columnNumber: 9
+                    }, this),
+                    errorMessage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                        style: {
+                            color: "red"
+                        },
+                        children: errorMessage
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ExportModal.tsx",
+                        lineNumber: 55,
+                        columnNumber: 26
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "export-modal-buttons",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 className: "export-button",
-                                onClick: ()=>onExport(startDate, endDate, format),
+                                onClick: handleExport,
                                 children: "📤 エクスポート"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ExportModal.tsx",
-                                lineNumber: 48,
+                                lineNumber: 58,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -530,25 +549,25 @@ const ExportModal = ({ isOpen, onClose, onExport })=>{
                                 children: "キャンセル"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ExportModal.tsx",
-                                lineNumber: 49,
+                                lineNumber: 59,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/ExportModal.tsx",
-                        lineNumber: 47,
+                        lineNumber: 57,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/ExportModal.tsx",
-                lineNumber: 23,
+                lineNumber: 35,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true);
 };
-_s(ExportModal, "uxP5ZxyHxEnkXVe7ismIL+v2/qU=");
+_s(ExportModal, "awd+WPxMwWcDDpq8lv2yZzIf7ns=");
 _c = ExportModal;
 const __TURBOPACK__default__export__ = ExportModal;
 var _c;
@@ -581,8 +600,11 @@ function Sidebar() {
     const [isMenuOpen, setIsMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isReportOpen, setIsReportOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isExportOpen, setIsExportOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isExportMyDataOpen, setIsExportMyDataOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [userRole, setUserRole] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const reportRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const menuRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Sidebar.useEffect": ()=>{
             const fetchUserRole = {
@@ -610,8 +632,8 @@ function Sidebar() {
     const handleChangePassword = ()=>{
         router.push("/change-password");
     };
-    const handleExport = async (startDate, endDate, format)=>{
-        console.log(`📥 エクスポート開始: ${startDate} ～ ${endDate}, フォーマット: ${format}`);
+    const handleExport = async (startDate, endDate, format, userId)=>{
+        console.log(`📥 エクスポート開始: ${startDate} ～ ${endDate}, フォーマット: ${format}, ユーザーID: ${userId || "全データ"}`);
         try {
             const response = await fetch("/api/exportData", {
                 method: "POST",
@@ -621,10 +643,17 @@ function Sidebar() {
                 body: JSON.stringify({
                     startDate,
                     endDate,
-                    format
-                }) // ✅ `format` を確実に送信
+                    format,
+                    userId
+                }) // ✅ `userId` がある場合、自分のデータのみ
             });
-            if (!response.ok) throw new Error("エクスポート処理に失敗しました");
+            if (!response.ok) {
+                const errorData = await response.json();
+                if (errorData.error === "対象期間に該当データはありません") {
+                    return false; // 修正箇所: データがない場合は `false` を返す
+                }
+                throw new Error("エクスポート処理に失敗しました");
+            }
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
@@ -634,10 +663,31 @@ function Sidebar() {
             link.click();
             link.remove();
             console.log("✅ エクスポート成功！");
+            return true; // 修正箇所: エクスポート成功時に `true` を返す
         } catch (error) {
             console.error("❌ エクスポートエラー:", error);
+            return false; // 修正箇所: エラー時は `false` を返す
         }
     };
+    // ✅ 外部クリックでホップアップを閉じる
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "Sidebar.useEffect": ()=>{
+            function handleClickOutside(event) {
+                if (reportRef.current && !reportRef.current.contains(event.target)) {
+                    setIsReportOpen(false);
+                }
+                if (menuRef.current && !menuRef.current.contains(event.target)) {
+                    setIsMenuOpen(false);
+                }
+            }
+            document.addEventListener("mousedown", handleClickOutside);
+            return ({
+                "Sidebar.useEffect": ()=>{
+                    document.removeEventListener("mousedown", handleClickOutside);
+                }
+            })["Sidebar.useEffect"];
+        }
+    }["Sidebar.useEffect"], []);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "sidebar",
         children: [
@@ -646,111 +696,146 @@ function Sidebar() {
                 children: "Haleiwaシステム"
             }, void 0, false, {
                 fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 72,
+                lineNumber: 100,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                        onClick: ()=>setIsReportOpen(!isReportOpen),
-                        children: "レポート"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 75,
-                        columnNumber: 9
-                    }, this),
-                    isReportOpen && userRole === "管理者" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        className: "export-button",
-                        onClick: ()=>setIsExportOpen(true),
-                        style: {
-                            marginTop: "10px"
-                        },
-                        children: "📤 Export"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 80,
-                        columnNumber: 11
-                    }, this)
-                ]
-            }, void 0, true, {
+                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                    onClick: ()=>setIsReportOpen(!isReportOpen),
+                    ref: reportRef,
+                    children: [
+                        "レポート",
+                        isReportOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "menu-popup_report",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    className: "export-button",
+                                    onClick: ()=>setIsExportMyDataOpen(true),
+                                    children: "📤 Export（My Data）"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/Sidebar.tsx",
+                                    lineNumber: 112,
+                                    columnNumber: 15
+                                }, this),
+                                isExportMyDataOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ExportModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                    isOpen: isExportMyDataOpen,
+                                    onClose: ()=>setIsExportMyDataOpen(false),
+                                    onExport: async (startDate, endDate, format)=>{
+                                        const userId = localStorage.getItem("userId") || ""; // 🔹 ユーザーIDを取得
+                                        return await handleExport(startDate, endDate, format, userId); // 🔹 `await` を追加し `Promise<boolean>` を返す
+                                    }
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/Sidebar.tsx",
+                                    lineNumber: 120,
+                                    columnNumber: 16
+                                }, this),
+                                userRole === "管理者" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                    className: "export-button",
+                                    onClick: ()=>setIsExportOpen(true),
+                                    children: "📤 Export（all Data）"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/Sidebar.tsx",
+                                    lineNumber: 134,
+                                    columnNumber: 17
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/Sidebar.tsx",
+                            lineNumber: 110,
+                            columnNumber: 13
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/src/components/Sidebar.tsx",
+                    lineNumber: 104,
+                    columnNumber: 9
+                }, this)
+            }, void 0, false, {
                 fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 74,
+                lineNumber: 103,
                 columnNumber: 7
+            }, this),
+            isExportMyDataOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ExportModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                isOpen: isExportMyDataOpen,
+                onClose: ()=>setIsExportMyDataOpen(false),
+                onExport: async (startDate, endDate, format)=>{
+                    const userId = localStorage.getItem("userId") || ""; // 🔹 ユーザーIDを取得
+                    return await handleExport(startDate, endDate, format, userId); // 🔹 `await` を追加し `Promise<boolean>` を返す
+                }
+            }, void 0, false, {
+                fileName: "[project]/src/components/Sidebar.tsx",
+                lineNumber: 148,
+                columnNumber: 9
             }, this),
             isExportOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ExportModal$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                 isOpen: isExportOpen,
                 onClose: ()=>setIsExportOpen(false),
-                onExport: handleExport
+                onExport: (startDate, endDate, format)=>handleExport(startDate, endDate, format)
             }, void 0, false, {
                 fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 94,
+                lineNumber: 159,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "settings",
                 onClick: ()=>setIsMenuOpen(!isMenuOpen),
+                ref: menuRef,
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$icons$2f$fa$2f$index$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["FaCog"], {
                         size: 20
                     }, void 0, false, {
                         fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 102,
+                        lineNumber: 172,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                         children: "管理メニュー"
                     }, void 0, false, {
                         fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 103,
+                        lineNumber: 173,
                         columnNumber: 9
-                    }, this)
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 101,
-                columnNumber: 7
-            }, this),
-            isMenuOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "menu-popup",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        className: "pw-change-button",
-                        onClick: handleChangePassword,
-                        style: {
-                            marginTop: "10px"
-                        },
-                        children: "🔑 PW変更"
-                    }, void 0, false, {
-                        fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 108,
-                        columnNumber: 11
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        className: "logout-button",
-                        onClick: handleLogout,
-                        style: {
-                            marginTop: "10px"
-                        },
-                        children: "ログアウト"
-                    }, void 0, false, {
+                    isMenuOpen && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "menu-popup",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                className: "pw-change-button",
+                                onClick: handleChangePassword,
+                                children: "🔑 PW変更"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/Sidebar.tsx",
+                                lineNumber: 176,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                className: "logout-button",
+                                onClick: handleLogout,
+                                children: "ログアウト"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/Sidebar.tsx",
+                                lineNumber: 180,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/src/components/Sidebar.tsx",
-                        lineNumber: 112,
+                        lineNumber: 175,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/Sidebar.tsx",
-                lineNumber: 107,
-                columnNumber: 9
+                lineNumber: 167,
+                columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/Sidebar.tsx",
-        lineNumber: 71,
+        lineNumber: 99,
         columnNumber: 5
     }, this);
 }
-_s(Sidebar, "gQX0KFzBVXNSR/VbjZAs4/WHots=", false, function() {
+_s(Sidebar, "qThJGx9bc+wkFK0UApkW96XUuAk=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];

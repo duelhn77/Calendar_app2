@@ -225,7 +225,22 @@ button:hover {
 /* ✅ ポップアップメニュー */
 .menu-popup {
   position: absolute;
-  bottom: 150px; /* ✅ 管理メニューの上に表示 */
+  bottom: 50px; /* ✅ 管理メニューの上に表示 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.menu-popup_report {
+  position: absolute;
+  bottom: 750px; /* ✅ レポートメニューの上に表示 */
   left: 50%;
   transform: translateX(-50%);
   width: 180px;
@@ -262,13 +277,18 @@ button:hover {
 
 /* ✅ ログアウトボタン */
 .export-button {
-  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px; /* ✅ 最小幅を設定して折り返しを防ぐ */
   padding: 10px;
-  background: blue;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap; /* ✅ テキストの折り返しを防止 */
 }
 
 .logout-button:hover {
@@ -293,6 +313,7 @@ button:hover {
   max-height: 150px; /* 5行分の高さに制限 */
   overflow-y: auto;
 }
+
 
 
 

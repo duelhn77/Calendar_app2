@@ -288,11 +288,12 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$exceljs$2f$e
 const SHEET_ID = process.env.SHEET_ID || "";
 async function POST(req) {
     try {
-        const { startDate, endDate, format } = await req.json(); // 🔹 `fileType` → `format` に統一
+        const { startDate, endDate, format, userId } = await req.json(); // 🔹 `userId` を追加
         console.log("📤 API 受信:", {
             startDate,
             endDate,
-            format
+            format,
+            userId
         });
         const auth = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$googleapis$2f$build$2f$src$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["google"].auth.GoogleAuth({
             credentials: {
@@ -309,33 +310,43 @@ async function POST(req) {
             version: "v4",
             auth
         });
-        // 🔹 スプレッドシートからデータを取得
+        // ✅ スプレッドシートからデータを取得
         const response = await sheets.spreadsheets.values.get({
             spreadsheetId: SHEET_ID,
-            range: "TimeSheet!A:J"
+            range: "TimeSheet!A:Z"
         });
         const rows = response.data.values || [];
         console.log("📊 取得データ:", rows.length, "件");
         if (rows.length < 2) throw new Error("データが見つかりません");
-        // 🔹 ヘッダーとデータを分ける
-        const headers = rows[0];
-        const data = rows.slice(1).filter((row)=>{
-            const rowStart = new Date(row[4]); // `start` (E列) を `Date` に変換
-            const rowEnd = new Date(row[5]); // `end` (F列) を `Date` に変換
-            // ✅ `YYYY-MM-DD` の文字列として比較
-            const rowStartDate = rowStart.toISOString().split("T")[0]; // `YYYY-MM-DD` 形式に変換
-            const rowEndDate = rowEnd.toISOString().split("T")[0]; // `YYYY-MM-DD` 形式に変換
-            console.log("📝 データ確認:", rowStartDate, rowEndDate);
-            return rowStartDate >= startDate && rowEndDate <= endDate;
+        const headers = rows[0]; // 🔹 ヘッダー行
+        const dataRows = rows.slice(1); // 🔹 実データ
+        // 🔹 ヘッダーからカラムのインデックスを取得
+        const userIdIndex = headers.indexOf("UserID");
+        const startIndex = headers.indexOf("Start");
+        const endIndex = headers.indexOf("End");
+        if (userIdIndex === -1 || startIndex === -1 || endIndex === -1) {
+            throw new Error("必要なカラムがスプレッドシートに見つかりません");
+        }
+        // ✅ ユーザーIDと期間でフィルタリング
+        const filteredData = dataRows.filter((row)=>{
+            const rowUserId = row[userIdIndex]; // `UserID` のカラム
+            const rowStart = new Date(row[startIndex]); // `Start` のカラム
+            const rowEnd = new Date(row[endIndex]); // `End` のカラム
+            const rowStartDate = rowStart.toISOString().split("T")[0];
+            const rowEndDate = rowEnd.toISOString().split("T")[0];
+            // ✅ `userId` が指定されている場合は、そのユーザーのみを抽出
+            const userFilter = userId ? rowUserId === userId : true;
+            const dateFilter = rowStartDate >= startDate && rowEndDate <= endDate;
+            return userFilter && dateFilter;
         });
-        console.log("📊 フィルタ後:", data.length, "件");
-        if (!data.length) throw new Error("指定期間のデータがありません");
+        console.log("📊 フィルタ後:", filteredData.length, "件");
+        if (!filteredData.length) throw new Error("指定期間のデータがありません");
         let fileBuffer;
         let contentType;
         let fileExtension;
         if (format === "csv") {
-            // 🔹 CSV 形式でエクスポート
-            const csv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$json2csv$2f$lib$2f$json2csv$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["parse"])(data, {
+            // ✅ CSV 形式でエクスポート
+            const csv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$json2csv$2f$lib$2f$json2csv$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["parse"])(filteredData, {
                 fields: headers,
                 quote: '"',
                 delimiter: ","
@@ -344,17 +355,16 @@ async function POST(req) {
             contentType = "text/csv";
             fileExtension = "csv";
         } else {
-            // 🔹 Excel 形式でエクスポート
+            // ✅ Excel 形式でエクスポート
             const workbook = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$exceljs$2f$excel$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].Workbook();
             const worksheet = workbook.addWorksheet("Exported Data");
-            worksheet.addRow(headers); // 🔹 ヘッダー行を追加
-            data.forEach((row)=>worksheet.addRow(row));
+            worksheet.addRow(headers);
+            filteredData.forEach((row)=>worksheet.addRow(row));
             fileBuffer = await workbook.xlsx.writeBuffer();
             contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             fileExtension = "xlsx";
         }
         console.log("📂 ファイル生成完了: export." + fileExtension);
-        // 🔹 クライアントにファイルを送信
         return new Response(fileBuffer, {
             headers: {
                 "Content-Type": contentType,
@@ -365,7 +375,7 @@ async function POST(req) {
         console.error("❌ エクスポートエラー:", error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             error: error.message,
-            stack: error.stack // ✅ 追加: スタックトレースを表示
+            stack: error.stack
         }, {
             status: 500
         });
