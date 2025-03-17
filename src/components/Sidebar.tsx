@@ -97,7 +97,7 @@ export default function Sidebar() {
 
   return (
     <div className="sidebar">
-      <h1 className="sidebar-title">Haleiwaシステム</h1>
+      <h1 className="sidebar-title">Haleiwa‐Log</h1>
 
       {/* 📌 レポートメニュー */}
       <ul>

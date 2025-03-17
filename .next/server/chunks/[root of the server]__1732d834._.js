@@ -318,7 +318,12 @@ async function POST(req) {
         const rows = response.data.values || [];
         console.log("📊 取得データ:", rows.length, "件");
         if (rows.length < 2) throw new Error("データが見つかりません");
-        const headers = rows[0]; // 🔹 ヘッダー行
+        const maxColumns = Math.max(...rows.map((row)=>row.length)); // 各行の最大列数を取得
+        const headers = [
+            ...rows[0],
+            "日付",
+            "時間"
+        ]; // ✅ ヘッダーを拡張（K列 "日付", L列 "時間" を追加）
         const dataRows = rows.slice(1); // 🔹 実データ
         // 🔹 ヘッダーからカラムのインデックスを取得
         const userIdIndex = headers.indexOf("UserID");
@@ -329,15 +334,30 @@ async function POST(req) {
         }
         // ✅ ユーザーIDと期間でフィルタリング
         const filteredData = dataRows.filter((row)=>{
-            const rowUserId = row[userIdIndex]; // `UserID` のカラム
+            const rowUserId = row[userIdIndex] || ""; // `UserID` のカラム
             const rowStart = new Date(row[startIndex]); // `Start` のカラム
             const rowEnd = new Date(row[endIndex]); // `End` のカラム
             const rowStartDate = rowStart.toISOString().split("T")[0];
             const rowEndDate = rowEnd.toISOString().split("T")[0];
-            // ✅ `userId` が指定されている場合は、そのユーザーのみを抽出
-            const userFilter = userId ? rowUserId === userId : true;
+            const userFilter = userId ? rowUserId === userId : true; // ✅ `userId` が指定されている場合は、そのユーザーのみを抽出
             const dateFilter = rowStartDate >= startDate && rowEndDate <= endDate;
             return userFilter && dateFilter;
+        }).map((row)=>{
+            const rowStart = new Date(row[startIndex]);
+            const rowEnd = new Date(row[endIndex]);
+            // 🔹 K列（"日付"）：YYYY-MM-DD の形式
+            const formattedDate = rowStart.toISOString().split("T")[0];
+            // 🔹 L列（"時間"）：15分単位での時間計算
+            const timeDiffMinutes = (rowEnd.getTime() - rowStart.getTime()) / (1000 * 60);
+            const timeHours = timeDiffMinutes / 60;
+            const roundedTime = Math.round(timeHours * 4) / 4; // 15分単位で丸める
+            // ✅ **J列が空白でもK列が適切な位置に入るように調整**
+            const newRow = [
+                ...row
+            ];
+            newRow[maxColumns] = formattedDate; // K列（最大列数の次）
+            newRow[maxColumns + 1] = roundedTime.toString(); // L列（最大列数+1）
+            return newRow;
         });
         console.log("📊 フィルタ後:", filteredData.length, "件");
         if (!filteredData.length) throw new Error("指定期間のデータがありません");
@@ -346,10 +366,18 @@ async function POST(req) {
         let fileExtension;
         if (format === "csv") {
             // ✅ CSV 形式でエクスポート
-            const csv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$json2csv$2f$lib$2f$json2csv$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["parse"])(filteredData.map((row)=>Object.fromEntries(row.map((value, i)=>[
-                        headers[i],
-                        value
-                    ]))), {
+            const formattedCsvData = filteredData.map((row)=>{
+                // `headers.length` に揃えて、不足分を空文字で埋める
+                const paddedRow = [
+                    ...row,
+                    ...new Array(headers.length - row.length).fill("")
+                ];
+                return Object.fromEntries(headers.map((header, i)=>[
+                        header,
+                        paddedRow[i] ?? ""
+                    ]));
+            });
+            const csv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$json2csv$2f$lib$2f$json2csv$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["parse"])(formattedCsvData, {
                 fields: headers,
                 quote: '"',
                 delimiter: ","
