@@ -346,13 +346,17 @@ async function POST(req) {
         let fileExtension;
         if (format === "csv") {
             // ✅ CSV 形式でエクスポート
-            const csv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$json2csv$2f$lib$2f$json2csv$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["parse"])(filteredData, {
+            const csv = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$json2csv$2f$lib$2f$json2csv$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["parse"])(filteredData.map((row)=>Object.fromEntries(row.map((value, i)=>[
+                        headers[i],
+                        value
+                    ]))), {
                 fields: headers,
                 quote: '"',
                 delimiter: ","
             });
-            fileBuffer = Buffer.from(csv, "utf-8");
-            contentType = "text/csv";
+            const utf8Bom = "\ufeff"; // ✅ BOM（Byte Order Mark）を追加
+            fileBuffer = Buffer.from(utf8Bom + csv, "utf-8"); // ✅ BOM付きでバッファに変換
+            contentType = "text/csv; charset=utf-8"; // ✅ Content-Type でエンコーディング指定
             fileExtension = "csv";
         } else {
             // ✅ Excel 形式でエクスポート

@@ -105,7 +105,12 @@ export default function Sidebar() {
           onClick={() => setIsReportOpen(!isReportOpen)}
           ref={reportRef}
         >
-          レポート
+          
+            <span>📑レポート</span>
+            <span className="report-arrow">▶</span>
+          
+          
+
           {isReportOpen && (
             <div className="menu-popup_report">
               {/* 全ユーザーが使用可能なExport（My Data） */}

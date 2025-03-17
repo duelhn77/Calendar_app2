@@ -72,14 +72,15 @@ export async function POST(req: Request) {
 
     if (format === "csv") {
       // ✅ CSV 形式でエクスポート
-      const csv = parse(filteredData, {
+      const csv = parse(filteredData.map(row => Object.fromEntries(row.map((value, i) => [headers[i], value]))), {
         fields: headers,
         quote: '"',
         delimiter: ",",
       });
-
-      fileBuffer = Buffer.from(csv, "utf-8");
-      contentType = "text/csv";
+      
+      const utf8Bom = "\ufeff"; // ✅ BOM（Byte Order Mark）を追加
+      fileBuffer = Buffer.from(utf8Bom + csv, "utf-8"); // ✅ BOM付きでバッファに変換
+      contentType = "text/csv; charset=utf-8"; // ✅ Content-Type でエンコーディング指定
       fileExtension = "csv";
     } else {
       // ✅ Excel 形式でエクスポート

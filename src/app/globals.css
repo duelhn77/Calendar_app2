@@ -222,6 +222,8 @@ button:hover {
   color: red;
 }
 
+
+
 /* ✅ ポップアップメニュー */
 .menu-popup {
   position: absolute;
@@ -238,12 +240,21 @@ button:hover {
   z-index: 1000;
 }
 
+ul li {
+  position: relative;
+  list-style: none; /* デフォルトの箇条書きスタイルを削除 */
+  padding: 10px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .menu-popup_report {
   position: absolute;
-  bottom: 750px; /* ✅ レポートメニューの上に表示 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 180px;
+  top: 50%;  /* レポートボタンの中央に合わせる */
+  left: 105%; /* レポートボタンの右側に配置 */
+  transform: translateY(-15%); /* 完全に中央揃え */
+  width: auto; /* 内容に応じた幅 */
+  min-width: 180px; /* 最低幅を設定 */
   background: white;
   border: 1px solid #ccc;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -251,6 +262,16 @@ button:hover {
   padding: 10px;
   text-align: center;
   z-index: 1000;
+  display: flex;  /* ボタンを横並びに配置 */
+  flex-direction: column; /* 水平に配置 */
+  align-items: center; /* ボタンを中央揃え */
+  gap: 0px; /* ボタン同士の間隔 */
+}
+
+
+
+.report-arrow {
+  margin-left: 80; /* ✅ 矢印を右端に配置 */
 }
 
 /* ✅ ログアウトボタン */
