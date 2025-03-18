@@ -48,7 +48,7 @@ export async function POST(req: Request) {
       range: "TimeSheet!A:J", // A列（DataID）を追加
       valueInputOption: "USER_ENTERED",
       requestBody: {
-        values: [[newId, now, userId, userName,start, end, engagement, activity, location, details]],
+        values: [[newId, formattedNow, userId, userName,start, end, engagement, activity, location, details]],
       },
     });
 
