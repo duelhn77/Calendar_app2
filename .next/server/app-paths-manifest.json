@@ -3,9 +3,12 @@
   "/login/page": "app/login/page.js",
   "/api/authenticateUser/route": "app/api/authenticateUser/route.js",
   "/calendar/page": "app/calendar/page.js",
-  "/api/fetchEngagements/route": "app/api/fetchEngagements/route.js",
   "/api/getUserRole/route": "app/api/getUserRole/route.js",
+  "/api/fetchEngagements/route": "app/api/fetchEngagements/route.js",
   "/api/getEvents/route": "app/api/getEvents/route.js",
-  "/api/exportData/route": "app/api/exportData/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/api/fetchActivities/route": "app/api/fetchActivities/route.js",
+  "/api/fetchLocations/route": "app/api/fetchLocations/route.js",
+  "/api/saveEvent/route": "app/api/saveEvent/route.js",
+  "/api/updateEvent/route": "app/api/updateEvent/route.js",
+  "/api/deleteEvent/route": "app/api/deleteEvent/route.js"
 }

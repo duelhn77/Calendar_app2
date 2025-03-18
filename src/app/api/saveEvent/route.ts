@@ -7,7 +7,9 @@ const SHEET_ID = process.env.SHEET_ID || "";
 export async function POST(req: Request) {
   try {
     const { userId, start, end, engagement, activity, location, details } = await req.json();
-    const now = new Date().toISOString();
+    const now = new Date();
+    now.setHours(now.getHours() + 9); // ✅ JSTに変換
+    const formattedNow = now.toISOString().replace("T", " ").substring(0, 19); // ✅ YYYY-MM-DD HH:MM:SS 形式
 
     const auth = new google.auth.GoogleAuth({
       credentials: {
