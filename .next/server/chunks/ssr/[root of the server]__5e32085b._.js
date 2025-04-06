@@ -383,12 +383,39 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     lineNumber: 271,
                     columnNumber: 3
                 }, this),
+                selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: ()=>{
+                        console.log("📋 複製ボタンが押されました！");
+                        const duplicatedStart = selectedRange?.start?.toISOString() || "";
+                        const duplicatedEnd = selectedRange?.end?.toISOString() || "";
+                        onSubmit({
+                            id: "",
+                            userId: localStorage.getItem("userId") || "",
+                            engagement: engagement?.value ?? "",
+                            activity,
+                            location: location?.value || "",
+                            details,
+                            start: duplicatedStart,
+                            end: duplicatedEnd
+                        });
+                    },
+                    style: {
+                        marginLeft: "10px",
+                        backgroundColor: "green",
+                        color: "white"
+                    },
+                    children: "複製"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/Modal.tsx",
+                    lineNumber: 283,
+                    columnNumber: 3
+                }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                     onClick: onClose,
                     children: "キャンセル"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 281,
+                    lineNumber: 308,
                     columnNumber: 9
                 }, this)
             ]

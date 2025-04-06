@@ -278,6 +278,33 @@ useEffect(() => {
   >削除</button>
 )}
 
+{/* ✅ 複製ボタンの追加（selectedEventがあるときのみ表示） */}
+{selectedEvent && (
+  <button
+    onClick={() => {
+      console.log("📋 複製ボタンが押されました！");
+      const duplicatedStart = selectedRange?.start?.toISOString() || "";
+      const duplicatedEnd = selectedRange?.end?.toISOString() || "";
+
+      onSubmit({
+        id: "", // ✅ 新しいIDとして空を渡す
+        userId: localStorage.getItem("userId") || "",
+        engagement: engagement?.value ?? "",
+        activity,
+        location: location?.value || "",
+        details,
+        start: duplicatedStart,
+        end: duplicatedEnd
+      });
+    }}
+    style={{ marginLeft: "10px", backgroundColor: "green", color: "white" }}
+  >
+    複製
+  </button>
+)}
+
+
+
         <button onClick={onClose}>キャンセル</button>
       </div>
     </div>

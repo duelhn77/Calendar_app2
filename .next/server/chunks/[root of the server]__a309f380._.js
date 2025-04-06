@@ -302,7 +302,7 @@ async function POST(req) {
                 values: [
                     [
                         newId,
-                        now,
+                        formattedNow,
                         userId,
                         userName,
                         start,
