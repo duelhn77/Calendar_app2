@@ -381,33 +381,6 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                 }, this),
                 selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                     onClick: async ()=>{
-                        if (isDeleting) return;
-                        setIsDeleting(true);
-                        console.log("🗑️ 削除ボタンが押されました！");
-                        try {
-                            await onDelete(selectedEvent.id);
-                        } catch (error) {
-                            console.error("❌ 削除エラー:", error);
-                        } finally{
-                            setIsDeleting(false);
-                        }
-                    },
-                    disabled: isDeleting,
-                    style: {
-                        backgroundColor: "red",
-                        color: "white",
-                        marginLeft: "10px",
-                        opacity: isDeleting ? 0.6 : 1,
-                        pointerEvents: isDeleting ? "none" : "auto"
-                    },
-                    children: isDeleting ? "削除中..." : "削除"
-                }, void 0, false, {
-                    fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 293,
-                    columnNumber: 3
-                }, this),
-                selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                    onClick: async ()=>{
                         if (isDuplicating) return;
                         setIsDuplicating(true);
                         console.log("📋 複製ボタンが押されました！");
@@ -433,7 +406,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     disabled: isDuplicating,
                     style: {
                         marginLeft: "10px",
-                        backgroundColor: "green",
+                        backgroundColor: "darkorange",
                         color: "white",
                         opacity: isDuplicating ? 0.6 : 1,
                         pointerEvents: isDuplicating ? "none" : "auto"
@@ -441,7 +414,34 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: isDuplicating ? "複製中..." : "複製"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 323,
+                    lineNumber: 291,
+                    columnNumber: 3
+                }, this),
+                selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: async ()=>{
+                        if (isDeleting) return;
+                        setIsDeleting(true);
+                        console.log("🗑️ 削除ボタンが押されました！");
+                        try {
+                            await onDelete(selectedEvent.id);
+                        } catch (error) {
+                            console.error("❌ 削除エラー:", error);
+                        } finally{
+                            setIsDeleting(false);
+                        }
+                    },
+                    disabled: isDeleting,
+                    style: {
+                        backgroundColor: "red",
+                        color: "white",
+                        marginLeft: "10px",
+                        opacity: isDeleting ? 0.6 : 1,
+                        pointerEvents: isDeleting ? "none" : "auto"
+                    },
+                    children: isDeleting ? "削除中..." : "削除"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/Modal.tsx",
+                    lineNumber: 333,
                     columnNumber: 3
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {

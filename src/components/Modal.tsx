@@ -286,6 +286,46 @@ useEffect(() => {
 </button>
 
 
+{/* ✅ 複製ボタンの追加（selectedEventがあるときのみ表示） */}
+{selectedEvent && (
+  <button
+    onClick={async () => {
+      if (isDuplicating) return;
+      setIsDuplicating(true);
+
+      console.log("📋 複製ボタンが押されました！");
+      const duplicatedStart = selectedRange?.start?.toISOString() || "";
+      const duplicatedEnd = selectedRange?.end?.toISOString() || "";
+
+      try {
+        await onSubmit({
+          id: "", // 新しいID
+          userId: localStorage.getItem("userId") || "",
+          engagement: engagement?.value ?? "",
+          activity,
+          location: location?.value || "",
+          details,
+          start: duplicatedStart,
+          end: duplicatedEnd,
+        });
+      } catch (error) {
+        console.error("❌ 複製エラー:", error);
+      } finally {
+        setIsDuplicating(false);
+      }
+    }}
+    disabled={isDuplicating}
+    style={{
+      marginLeft: "10px",
+      backgroundColor: "darkorange",
+      color: "white",
+      opacity: isDuplicating ? 0.6 : 1,
+      pointerEvents: isDuplicating ? "none" : "auto",
+    }}
+  >
+    {isDuplicating ? "複製中..." : "複製"}
+  </button>
+)}
 
 
 {/* ✅ 予定があるときのみ「削除」ボタンを表示 */}
@@ -318,46 +358,6 @@ useEffect(() => {
 )}
 
 
-{/* ✅ 複製ボタンの追加（selectedEventがあるときのみ表示） */}
-{selectedEvent && (
-  <button
-    onClick={async () => {
-      if (isDuplicating) return;
-      setIsDuplicating(true);
-
-      console.log("📋 複製ボタンが押されました！");
-      const duplicatedStart = selectedRange?.start?.toISOString() || "";
-      const duplicatedEnd = selectedRange?.end?.toISOString() || "";
-
-      try {
-        await onSubmit({
-          id: "", // 新しいID
-          userId: localStorage.getItem("userId") || "",
-          engagement: engagement?.value ?? "",
-          activity,
-          location: location?.value || "",
-          details,
-          start: duplicatedStart,
-          end: duplicatedEnd,
-        });
-      } catch (error) {
-        console.error("❌ 複製エラー:", error);
-      } finally {
-        setIsDuplicating(false);
-      }
-    }}
-    disabled={isDuplicating}
-    style={{
-      marginLeft: "10px",
-      backgroundColor: "green",
-      color: "white",
-      opacity: isDuplicating ? 0.6 : 1,
-      pointerEvents: isDuplicating ? "none" : "auto",
-    }}
-  >
-    {isDuplicating ? "複製中..." : "複製"}
-  </button>
-)}
 
 
 
