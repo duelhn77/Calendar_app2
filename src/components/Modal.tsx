@@ -27,6 +27,48 @@ export function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedR
   const [location, setLocation] = useState<{ value: string; label: string } | null>(null);
   const [locations, setLocations] = useState<{ value: string; label: string }[]>([]);
   const [details, setDetails] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false); 
+  const [isDuplicating, setIsDuplicating] = useState(false);
+
+  const handleAction = async () => {
+    console.log("✅ 追加・更新ボタンが押されました！");
+    setIsSubmitting(true); // 🔸送信開始時にロック
+
+    try {
+      if (selectedEvent) {
+        if (!selectedRange) {
+          console.error("❌ 更新範囲が未定義です！");
+          return;
+        }
+
+        await onUpdate({
+          id: selectedEvent.id || "",
+          userId: localStorage.getItem("userId") || "",
+          engagement: engagement?.value ?? "",
+          activity,
+          location: location?.value || "",
+          details,
+          start: selectedRange.start.toISOString(),
+          end: selectedRange.end.toISOString(),
+        }, selectedRange);
+      } else {
+        await onSubmit({
+          id: "",
+          userId: localStorage.getItem("userId") || "",
+          engagement: engagement?.value ?? "",
+          activity,
+          location: location?.value || "",
+          details,
+          start: selectedRange?.start.toISOString() || "",
+          end: selectedRange?.end.toISOString() || "",
+        });
+      }
+    } finally {
+      setIsSubmitting(false); // 🔸送信後に解除
+    }
+  };
+
 
   // ✅ エンゲージメントリストの取得
   useEffect(() => {
@@ -227,81 +269,133 @@ useEffect(() => {
              paddingBottom: "5px",
              height: "30px", // ✅ 適度な高さを設定
           }}
-        />        
-        <button
-          onClick={() => {
-          console.log("✅ 追加・更新ボタンが押されました！");
+        /> 
 
-        if (selectedEvent) {
-         if (!selectedRange) {
+<button
+  onClick={async () => {
+    if (isSubmitting) return; // 🔒 すでに送信中なら処理しない
+    setIsSubmitting(true);    // ✅ 送信開始 → ボタン無効化
+
+    console.log("✅ 追加・更新ボタンが押されました！");
+
+    try {
+      if (selectedEvent) {
+        if (!selectedRange) {
           console.error("❌ 更新範囲が未定義です！");
-         return;
-         }
-    
-         onUpdate({
-          id: selectedEvent?.id || "", // ✅ `id` をセット
-          userId: localStorage.getItem("userId") || "", // ✅ `userId` をセット
-          engagement: engagement?.value ?? "",
-          activity,
-          location: location?.value || "",
-          details,
-          start: selectedRange?.start.toISOString() || "", // ✅ `start` をセット
-          end: selectedRange?.end.toISOString() || "" // ✅ `end` をセット
-        },selectedRange);
-        } else {
-         onSubmit({
-          id: "", // ✅ 新規作成時は `id` なし
-          userId: localStorage.getItem("userId") || "", // ✅ `userId` をセット
-          engagement: engagement?.value ?? "",
-          activity,
-          location: location?.value || "",
-          details,
-          start: selectedRange?.start.toISOString() || "", // ✅ `start` をセット
-          end: selectedRange?.end.toISOString() || "" // ✅ `end` をセット
-        });
+          setIsSubmitting(false);
+          return;
         }
-        }}>
 
-          {selectedEvent ? "更新" : "追加"}
-        </button>
+        await onUpdate({
+          id: selectedEvent?.id || "",
+          userId: localStorage.getItem("userId") || "",
+          engagement: engagement?.value ?? "",
+          activity,
+          location: location?.value || "",
+          details,
+          start: selectedRange?.start.toISOString() || "",
+          end: selectedRange?.end.toISOString() || "",
+        }, selectedRange);
+      } else {
+        await onSubmit({
+          id: "",
+          userId: localStorage.getItem("userId") || "",
+          engagement: engagement?.value ?? "",
+          activity,
+          location: location?.value || "",
+          details,
+          start: selectedRange?.start.toISOString() || "",
+          end: selectedRange?.end.toISOString() || "",
+        });
+      }
+    } catch (error) {
+      console.error("❌ エラー:", error);
+    } finally {
+      setIsSubmitting(false); // ✅ 処理終了後にボタン再有効化
+    }
+  }}
+  disabled={isSubmitting} // ✅ 送信中はボタンを無効にする
+  style={{
+    opacity: isSubmitting ? 0.6 : 1,
+    pointerEvents: isSubmitting ? "none" : "auto",
+  }}
+>
+  {isSubmitting ? "送信中..." : selectedEvent ? "更新" : "追加"}
+</button>
+
 
 
 {/* ✅ 予定があるときのみ「削除」ボタンを表示 */}
 {selectedEvent && (
   <button
     onClick={async () => {
-      console.log("🗑️ 削除ボタンが押されました！");
-      await onDelete(selectedEvent.id); // ✅ `selectedEvent.id` を渡す
+      if (isDeleting) return;
+      setIsDeleting(true);
 
+      console.log("🗑️ 削除ボタンが押されました！");
+      try {
+        await onDelete(selectedEvent.id);
+      } catch (error) {
+        console.error("❌ 削除エラー:", error);
+      } finally {
+        setIsDeleting(false);
+      }
     }}
-    style={{ backgroundColor: "red", color: "white", marginLeft: "10px" }}
-  >削除</button>
+    disabled={isDeleting}
+    style={{
+      backgroundColor: "red",
+      color: "white",
+      marginLeft: "10px",
+      opacity: isDeleting ? 0.6 : 1,
+      pointerEvents: isDeleting ? "none" : "auto",
+    }}
+  >
+    {isDeleting ? "削除中..." : "削除"}
+  </button>
 )}
+
 
 {/* ✅ 複製ボタンの追加（selectedEventがあるときのみ表示） */}
 {selectedEvent && (
   <button
-    onClick={() => {
+    onClick={async () => {
+      if (isDuplicating) return;
+      setIsDuplicating(true);
+
       console.log("📋 複製ボタンが押されました！");
       const duplicatedStart = selectedRange?.start?.toISOString() || "";
       const duplicatedEnd = selectedRange?.end?.toISOString() || "";
 
-      onSubmit({
-        id: "", // ✅ 新しいIDとして空を渡す
-        userId: localStorage.getItem("userId") || "",
-        engagement: engagement?.value ?? "",
-        activity,
-        location: location?.value || "",
-        details,
-        start: duplicatedStart,
-        end: duplicatedEnd
-      });
+      try {
+        await onSubmit({
+          id: "", // 新しいID
+          userId: localStorage.getItem("userId") || "",
+          engagement: engagement?.value ?? "",
+          activity,
+          location: location?.value || "",
+          details,
+          start: duplicatedStart,
+          end: duplicatedEnd,
+        });
+      } catch (error) {
+        console.error("❌ 複製エラー:", error);
+      } finally {
+        setIsDuplicating(false);
+      }
     }}
-    style={{ marginLeft: "10px", backgroundColor: "green", color: "white" }}
+    disabled={isDuplicating}
+    style={{
+      marginLeft: "10px",
+      backgroundColor: "green",
+      color: "white",
+      opacity: isDuplicating ? 0.6 : 1,
+      pointerEvents: isDuplicating ? "none" : "auto",
+    }}
   >
-    複製
+    {isDuplicating ? "複製中..." : "複製"}
   </button>
 )}
+
 
 
 

@@ -56,6 +56,44 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
     const [location, setLocation] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [locations, setLocations] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const [details, setDetails] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])("");
+    const [isSubmitting, setIsSubmitting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isDeleting, setIsDeleting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [isDuplicating, setIsDuplicating] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
+    const handleAction = async ()=>{
+        console.log("✅ 追加・更新ボタンが押されました！");
+        setIsSubmitting(true); // 🔸送信開始時にロック
+        try {
+            if (selectedEvent) {
+                if (!selectedRange) {
+                    console.error("❌ 更新範囲が未定義です！");
+                    return;
+                }
+                await onUpdate({
+                    id: selectedEvent.id || "",
+                    userId: localStorage.getItem("userId") || "",
+                    engagement: engagement?.value ?? "",
+                    activity,
+                    location: location?.value || "",
+                    details,
+                    start: selectedRange.start.toISOString(),
+                    end: selectedRange.end.toISOString()
+                }, selectedRange);
+            } else {
+                await onSubmit({
+                    id: "",
+                    userId: localStorage.getItem("userId") || "",
+                    engagement: engagement?.value ?? "",
+                    activity,
+                    location: location?.value || "",
+                    details,
+                    start: selectedRange?.start.toISOString() || "",
+                    end: selectedRange?.end.toISOString() || ""
+                });
+            }
+        } finally{
+            setIsSubmitting(false); // 🔸送信後に解除
+        }
+    };
     // ✅ エンゲージメントリストの取得
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const fetchEngagements = async ()=>{
@@ -158,7 +196,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "作業情報を入力"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 134,
+                    lineNumber: 176,
                     columnNumber: 9
                 }, this),
                 selectedRange && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -176,7 +214,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 136,
+                    lineNumber: 178,
                     columnNumber: 10
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -188,12 +226,12 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             children: "エンゲージメント"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 145,
+                            lineNumber: 187,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 145,
+                            lineNumber: 187,
                             columnNumber: 34
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$select$2f$dist$2f$react$2d$select$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"], {
@@ -217,13 +255,13 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             placeholder: "エンゲージメントを選択"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 146,
+                            lineNumber: 188,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 144,
+                    lineNumber: 186,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -235,12 +273,12 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             children: "Activity"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 172,
+                            lineNumber: 214,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 172,
+                            lineNumber: 214,
                             columnNumber: 32
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$select$2f$dist$2f$react$2d$select$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"], {
@@ -267,20 +305,20 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                             placeholder: "Activityを選択"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Modal.tsx",
-                            lineNumber: 173,
+                            lineNumber: 215,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 171,
+                    lineNumber: 213,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
                     children: "作業場所"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 197,
+                    lineNumber: 239,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$select$2f$dist$2f$react$2d$select$2e$esm$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"], {
@@ -301,7 +339,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 198,
+                    lineNumber: 240,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
@@ -313,7 +351,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "作業内容"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 217,
+                    lineNumber: 259,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -327,87 +365,123 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     }
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 221,
+                    lineNumber: 263,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                    onClick: ()=>{
+                    onClick: async ()=>{
+                        if (isSubmitting) return; // 🔒 すでに送信中なら処理しない
+                        setIsSubmitting(true); // ✅ 送信開始 → ボタン無効化
                         console.log("✅ 追加・更新ボタンが押されました！");
-                        if (selectedEvent) {
-                            if (!selectedRange) {
-                                console.error("❌ 更新範囲が未定義です！");
-                                return;
+                        try {
+                            if (selectedEvent) {
+                                if (!selectedRange) {
+                                    console.error("❌ 更新範囲が未定義です！");
+                                    setIsSubmitting(false);
+                                    return;
+                                }
+                                await onUpdate({
+                                    id: selectedEvent?.id || "",
+                                    userId: localStorage.getItem("userId") || "",
+                                    engagement: engagement?.value ?? "",
+                                    activity,
+                                    location: location?.value || "",
+                                    details,
+                                    start: selectedRange?.start.toISOString() || "",
+                                    end: selectedRange?.end.toISOString() || ""
+                                }, selectedRange);
+                            } else {
+                                await onSubmit({
+                                    id: "",
+                                    userId: localStorage.getItem("userId") || "",
+                                    engagement: engagement?.value ?? "",
+                                    activity,
+                                    location: location?.value || "",
+                                    details,
+                                    start: selectedRange?.start.toISOString() || "",
+                                    end: selectedRange?.end.toISOString() || ""
+                                });
                             }
-                            onUpdate({
-                                id: selectedEvent?.id || "",
-                                userId: localStorage.getItem("userId") || "",
-                                engagement: engagement?.value ?? "",
-                                activity,
-                                location: location?.value || "",
-                                details,
-                                start: selectedRange?.start.toISOString() || "",
-                                end: selectedRange?.end.toISOString() || "" // ✅ `end` をセット
-                            }, selectedRange);
-                        } else {
-                            onSubmit({
+                        } catch (error) {
+                            console.error("❌ エラー:", error);
+                        } finally{
+                            setIsSubmitting(false); // ✅ 処理終了後にボタン再有効化
+                        }
+                    },
+                    disabled: isSubmitting,
+                    style: {
+                        opacity: isSubmitting ? 0.6 : 1,
+                        pointerEvents: isSubmitting ? "none" : "auto"
+                    },
+                    children: isSubmitting ? "送信中..." : selectedEvent ? "更新" : "追加"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/Modal.tsx",
+                    lineNumber: 274,
+                    columnNumber: 1
+                }, this),
+                selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: async ()=>{
+                        if (isDeleting) return;
+                        setIsDeleting(true);
+                        console.log("🗑️ 削除ボタンが押されました！");
+                        try {
+                            await onDelete(selectedEvent.id);
+                        } catch (error) {
+                            console.error("❌ 削除エラー:", error);
+                        } finally{
+                            setIsDeleting(false);
+                        }
+                    },
+                    disabled: isDeleting,
+                    style: {
+                        backgroundColor: "red",
+                        color: "white",
+                        marginLeft: "10px",
+                        opacity: isDeleting ? 0.6 : 1,
+                        pointerEvents: isDeleting ? "none" : "auto"
+                    },
+                    children: isDeleting ? "削除中..." : "削除"
+                }, void 0, false, {
+                    fileName: "[project]/src/components/Modal.tsx",
+                    lineNumber: 330,
+                    columnNumber: 3
+                }, this),
+                selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                    onClick: async ()=>{
+                        if (isDuplicating) return;
+                        setIsDuplicating(true);
+                        console.log("📋 複製ボタンが押されました！");
+                        const duplicatedStart = selectedRange?.start?.toISOString() || "";
+                        const duplicatedEnd = selectedRange?.end?.toISOString() || "";
+                        try {
+                            await onSubmit({
                                 id: "",
                                 userId: localStorage.getItem("userId") || "",
                                 engagement: engagement?.value ?? "",
                                 activity,
                                 location: location?.value || "",
                                 details,
-                                start: selectedRange?.start.toISOString() || "",
-                                end: selectedRange?.end.toISOString() || "" // ✅ `end` をセット
+                                start: duplicatedStart,
+                                end: duplicatedEnd
                             });
+                        } catch (error) {
+                            console.error("❌ 複製エラー:", error);
+                        } finally{
+                            setIsDuplicating(false);
                         }
                     },
-                    children: selectedEvent ? "更新" : "追加"
-                }, void 0, false, {
-                    fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 231,
-                    columnNumber: 9
-                }, this),
-                selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                    onClick: async ()=>{
-                        console.log("🗑️ 削除ボタンが押されました！");
-                        await onDelete(selectedEvent.id); // ✅ `selectedEvent.id` を渡す
-                    },
-                    style: {
-                        backgroundColor: "red",
-                        color: "white",
-                        marginLeft: "10px"
-                    },
-                    children: "削除"
-                }, void 0, false, {
-                    fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 271,
-                    columnNumber: 3
-                }, this),
-                selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                    onClick: ()=>{
-                        console.log("📋 複製ボタンが押されました！");
-                        const duplicatedStart = selectedRange?.start?.toISOString() || "";
-                        const duplicatedEnd = selectedRange?.end?.toISOString() || "";
-                        onSubmit({
-                            id: "",
-                            userId: localStorage.getItem("userId") || "",
-                            engagement: engagement?.value ?? "",
-                            activity,
-                            location: location?.value || "",
-                            details,
-                            start: duplicatedStart,
-                            end: duplicatedEnd
-                        });
-                    },
+                    disabled: isDuplicating,
                     style: {
                         marginLeft: "10px",
                         backgroundColor: "green",
-                        color: "white"
+                        color: "white",
+                        opacity: isDuplicating ? 0.6 : 1,
+                        pointerEvents: isDuplicating ? "none" : "auto"
                     },
-                    children: "複製"
+                    children: isDuplicating ? "複製中..." : "複製"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 283,
+                    lineNumber: 360,
                     columnNumber: 3
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -415,18 +489,18 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "キャンセル"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 308,
+                    lineNumber: 402,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/Modal.tsx",
-            lineNumber: 133,
+            lineNumber: 175,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/components/Modal.tsx",
-        lineNumber: 132,
+        lineNumber: 174,
         columnNumber: 5
     }, this);
 }
