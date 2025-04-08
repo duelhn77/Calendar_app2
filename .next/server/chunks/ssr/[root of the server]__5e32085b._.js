@@ -369,45 +369,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                    onClick: async ()=>{
-                        if (isSubmitting) return; // 🔒 すでに送信中なら処理しない
-                        setIsSubmitting(true); // ✅ 送信開始 → ボタン無効化
-                        console.log("✅ 追加・更新ボタンが押されました！");
-                        try {
-                            if (selectedEvent) {
-                                if (!selectedRange) {
-                                    console.error("❌ 更新範囲が未定義です！");
-                                    setIsSubmitting(false);
-                                    return;
-                                }
-                                await onUpdate({
-                                    id: selectedEvent?.id || "",
-                                    userId: localStorage.getItem("userId") || "",
-                                    engagement: engagement?.value ?? "",
-                                    activity,
-                                    location: location?.value || "",
-                                    details,
-                                    start: selectedRange?.start.toISOString() || "",
-                                    end: selectedRange?.end.toISOString() || ""
-                                }, selectedRange);
-                            } else {
-                                await onSubmit({
-                                    id: "",
-                                    userId: localStorage.getItem("userId") || "",
-                                    engagement: engagement?.value ?? "",
-                                    activity,
-                                    location: location?.value || "",
-                                    details,
-                                    start: selectedRange?.start.toISOString() || "",
-                                    end: selectedRange?.end.toISOString() || ""
-                                });
-                            }
-                        } catch (error) {
-                            console.error("❌ エラー:", error);
-                        } finally{
-                            setIsSubmitting(false); // ✅ 処理終了後にボタン再有効化
-                        }
-                    },
+                    onClick: handleAction,
                     disabled: isSubmitting,
                     style: {
                         opacity: isSubmitting ? 0.6 : 1,
@@ -416,7 +378,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: isSubmitting ? "送信中..." : selectedEvent ? "更新" : "追加"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 274,
+                    lineNumber: 277,
                     columnNumber: 1
                 }, this),
                 selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -443,7 +405,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: isDeleting ? "削除中..." : "削除"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 330,
+                    lineNumber: 293,
                     columnNumber: 3
                 }, this),
                 selectedEvent && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -481,7 +443,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: isDuplicating ? "複製中..." : "複製"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 360,
+                    lineNumber: 323,
                     columnNumber: 3
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -489,7 +451,7 @@ function Modal({ isOpen, onClose, onSubmit, onUpdate, onDelete, selectedRange, s
                     children: "キャンセル"
                 }, void 0, false, {
                     fileName: "[project]/src/components/Modal.tsx",
-                    lineNumber: 402,
+                    lineNumber: 365,
                     columnNumber: 9
                 }, this)
             ]

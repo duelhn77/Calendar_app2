@@ -271,50 +271,12 @@ useEffect(() => {
           }}
         /> 
 
+
+
+
 <button
-  onClick={async () => {
-    if (isSubmitting) return; // 🔒 すでに送信中なら処理しない
-    setIsSubmitting(true);    // ✅ 送信開始 → ボタン無効化
-
-    console.log("✅ 追加・更新ボタンが押されました！");
-
-    try {
-      if (selectedEvent) {
-        if (!selectedRange) {
-          console.error("❌ 更新範囲が未定義です！");
-          setIsSubmitting(false);
-          return;
-        }
-
-        await onUpdate({
-          id: selectedEvent?.id || "",
-          userId: localStorage.getItem("userId") || "",
-          engagement: engagement?.value ?? "",
-          activity,
-          location: location?.value || "",
-          details,
-          start: selectedRange?.start.toISOString() || "",
-          end: selectedRange?.end.toISOString() || "",
-        }, selectedRange);
-      } else {
-        await onSubmit({
-          id: "",
-          userId: localStorage.getItem("userId") || "",
-          engagement: engagement?.value ?? "",
-          activity,
-          location: location?.value || "",
-          details,
-          start: selectedRange?.start.toISOString() || "",
-          end: selectedRange?.end.toISOString() || "",
-        });
-      }
-    } catch (error) {
-      console.error("❌ エラー:", error);
-    } finally {
-      setIsSubmitting(false); // ✅ 処理終了後にボタン再有効化
-    }
-  }}
-  disabled={isSubmitting} // ✅ 送信中はボタンを無効にする
+  onClick={handleAction}
+  disabled={isSubmitting}
   style={{
     opacity: isSubmitting ? 0.6 : 1,
     pointerEvents: isSubmitting ? "none" : "auto",
@@ -322,6 +284,7 @@ useEffect(() => {
 >
   {isSubmitting ? "送信中..." : selectedEvent ? "更新" : "追加"}
 </button>
+
 
 
 
