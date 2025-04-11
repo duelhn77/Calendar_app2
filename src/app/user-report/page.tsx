@@ -95,7 +95,7 @@ export default function UserReportPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-8">👤 ユーザー別予実レポート</h1>
+      <h1 className="text-2xl font-bold mb-8">👤 ユーザー別実績レポート</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10 max-w-4xl">
         <div className="flex flex-col">
@@ -150,9 +150,9 @@ export default function UserReportPage() {
                 <th className="border px-6 py-3">ユーザー</th>
                 <th className="border px-6 py-3">Engagement</th>
                 <th className="border px-6 py-3">{viewMode === "month" ? "月" : "Activity"}</th>
-                <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>予算</th>
+                {/* <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>予算</th> */}
                 <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>実績</th>
-                <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>差分</th>
+                {/* <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>差分</th> */}
               </tr>
             </thead>
             <tbody>
@@ -163,9 +163,9 @@ export default function UserReportPage() {
                     <td className="border px-6 py-2">{row.userName}</td>
                     <td className="border px-6 py-2">{row.engagement}</td>
                     <td className="border px-6 py-2">{viewMode === "month" ? row.month : row.activity}</td>
-                    <td className="border px-6 py-2" style={{ width: "120px", textAlign: "right" }}>{row.budget.toFixed(1)}h</td>
+                    {/* <td className="border px-6 py-2" style={{ width: "120px", textAlign: "right" }}>{row.budget.toFixed(1)}h</td> */}
                     <td className="border px-6 py-2" style={{ width: "120px", textAlign: "right" }}>{row.actual.toFixed(1)}h</td>
-                    <td
+                    {/* <td
                       className="border px-6 py-2 font-semibold"
                       style={{
                         width: "120px",
@@ -174,18 +174,23 @@ export default function UserReportPage() {
                       }}
                     >
                       {(diff >= 0 ? "+" : "") + diff.toFixed(1)}h
-                    </td>
+                    </td> */}
                   </tr>
                 );
               })}
 
-              <tr className="font-bold bg-gray-50" style={{ borderTop: "2px solid black", borderBottom: "2px solid black" }}>
+              <tr className="font-bold bg-gray-50" style={{
+                  borderTop: "2px solid black",
+                  borderBottom: "2px solid black",
+                  fontWeight: "bold",
+                  backgroundColor: "#aed4f6",
+                }}>
                 <td className="border px-6 py-2 text-center" colSpan={3}>合計</td>
-                <td className="border px-6 py-2" style={{ textAlign: "right" }}>{totalBudget.toFixed(1)}h</td>
+                {/* <td className="border px-6 py-2" style={{ textAlign: "right" }}>{totalBudget.toFixed(1)}h</td> */}
                 <td className="border px-6 py-2" style={{ textAlign: "right" }}>{totalActual.toFixed(1)}h</td>
-                <td className="border px-6 py-2" style={{ textAlign: "right", color: totalDiff > 0 ? "red" : totalDiff < 0 ? "green" : "black" }}>
+                {/* <td className="border px-6 py-2" style={{ textAlign: "right", color: totalDiff > 0 ? "red" : totalDiff < 0 ? "green" : "black" }}>
                   {(totalDiff >= 0 ? "+" : "") + totalDiff.toFixed(1)}h
-                </td>
+                </td> */}
               </tr>
             </tbody>
           </table>

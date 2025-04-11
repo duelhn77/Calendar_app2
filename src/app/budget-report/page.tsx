@@ -29,14 +29,14 @@ export default function BudgetReportPage() {
         const res = await fetch(`/api/fetchEngagements?userId=${userId}`);
         const json = await res.json();
         interface Engagement {
-            name: string;
-            color: string;
-          }
-          const names = (json as Engagement[]).map((e) => e.name);
-        setEngagements(names);
-        if (names.length > 0) {
-          setSelectedEngagement(names[0]);
+          name: string;
+          color: string;
         }
+        const names = (json as Engagement[]).map((e) => e.name);
+        setEngagements(names);
+        // if (names.length > 0) {
+        //   setSelectedEngagement(names[0]);
+        // }
       } catch (error) {
         console.error("❌ fetchEngagements エラー:", error);
       }
@@ -46,6 +46,7 @@ export default function BudgetReportPage() {
     fetchEngagements();
   }, []);
 
+  // ✅ Activityごとに一意にまとめる（予算時間は重複集計しない）
   const activityMap: { [key: string]: ReportRow } = {};
   reportData.forEach((row) => {
     if (row.engagement !== selectedEngagement) return;
@@ -53,8 +54,7 @@ export default function BudgetReportPage() {
     if (!activityMap[key]) {
       activityMap[key] = { ...row };
     } else {
-      activityMap[key].budget += row.budget;
-      activityMap[key].actual += row.actual;
+      activityMap[key].actual += row.actual; // 実績は加算
     }
   });
 
@@ -108,7 +108,7 @@ export default function BudgetReportPage() {
                 <tr>
                   <th className="border px-4 py-2" style={{ width: "100px" }}>Activity ID</th>
                   <th className="border px-4 py-2" style={{ width: "250px" }}>Activity</th>
-                  <th className="border px-4 py-2" style={{ textAlign: "right" }}>予算時間</th>
+                  <th className="border px-4 py-2" style={{ textAlign: "right" }}>予定時間</th>
                   <th className="border px-4 py-2" style={{ textAlign: "right" }}>実績時間</th>
                   <th className="border px-4 py-2" style={{ textAlign: "right" }}>差分</th>
                 </tr>
@@ -137,7 +137,13 @@ export default function BudgetReportPage() {
                 })}
 
                 {/* ✅ 合計行 */}
-                <tr className="bg-gray-100 font-semibold" style={{ borderTop: "2px solid black", borderBottom: "2px solid black" }}>
+                <tr className="bg-gray-100 font-semibold" 
+                style={{
+                  borderTop: "2px solid black",
+                  borderBottom: "2px solid black",
+                  fontWeight: "bold",
+                  backgroundColor: "#aed4f6",
+                }}>
                   <td className="border px-4 py-2"></td>
                   <td className="border px-4 py-2 text-center">合計</td>
                   <td className="border px-4 py-2" style={{ textAlign: "right" }}>{totalBudget.toFixed(2)} h</td>
