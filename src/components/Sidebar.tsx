@@ -3,35 +3,44 @@ import { FaCog } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import ExportModal from "./ExportModal";
 
-export default function Sidebar() {
+export type SidebarView = "calendar" | "report" | "user-report" | "dashboard";
+
+type SidebarProps = {
+  onSelectView: (view: SidebarView) => void;
+};
+
+export default function Sidebar({ onSelectView }: SidebarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
   const [isExportMyDataOpen, setIsExportMyDataOpen] = useState(false);
-  const [userRole, setUserRole] = useState("");
+  const [permissions, setPermissions] = useState({
+    canExportAll: false,
+    canViewReport: false,
+    canViewUserReport: false,
+    canViewDashboard: false,
+  });
   const router = useRouter();
 
   const reportRef = useRef<HTMLLIElement | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchUserRole = async () => {
+    const fetchPermissions = async () => {
       const userId = localStorage.getItem("userId");
       if (!userId) return;
 
       try {
-        const response = await fetch(`/api/getUserRole?userId=${userId}`);
-        const data = await response.json();
-
-        if (data.role) {
-          setUserRole(data.role);
-        }
+        const res = await fetch(`/api/getUserPermissions?userId=${userId}`);
+        const data = await res.json();
+        console.log("✅ 権限データ:", data);
+        setPermissions(data);
       } catch (error) {
-        console.error("❌ ユーザー役職の取得エラー:", error);
+        console.error("❌ 権限取得エラー:", error);
       }
     };
 
-    fetchUserRole();
+    fetchPermissions();
   }, []);
 
   const handleLogout = () => {
@@ -44,20 +53,16 @@ export default function Sidebar() {
   };
 
   const handleExport = async (startDate: string, endDate: string, format: string, userId?: string): Promise<boolean> => {
-    console.log(`📥 エクスポート開始: ${startDate} ～ ${endDate}, フォーマット: ${format}, ユーザーID: ${userId || "全データ"}`);
-
     try {
       const response = await fetch("/api/exportData", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ startDate, endDate, format, userId }) // ✅ `userId` がある場合、自分のデータのみ
+        body: JSON.stringify({ startDate, endDate, format, userId })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        if (errorData.error === "対象期間に該当データはありません") {
-          return false; // 修正箇所: データがない場合は `false` を返す
-        }
+        if (errorData.error === "対象期間に該当データはありません") return false;
         throw new Error("エクスポート処理に失敗しました");
       }
 
@@ -70,15 +75,13 @@ export default function Sidebar() {
       link.click();
       link.remove();
 
-      console.log("✅ エクスポート成功！");
-      return true; // 修正箇所: エクスポート成功時に `true` を返す
+      return true;
     } catch (error) {
       console.error("❌ エクスポートエラー:", error);
-      return false; // 修正箇所: エラー時は `false` を返す
+      return false;
     }
   };
 
-  // ✅ 外部クリックでホップアップを閉じる
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (reportRef.current && !reportRef.current.contains(event.target as Node)) {
@@ -97,23 +100,18 @@ export default function Sidebar() {
 
   return (
     <div className="sidebar">
-      <h1 className="sidebar-title">Haleiwa‐Log</h1>
-
-      {/* 📌 レポートメニュー */}
+      <h1 className="sidebar-title">執務管理システム</h1>
       <ul>
-        <li 
-          onClick={() => setIsReportOpen(!isReportOpen)}
-          ref={reportRef}
-        >
-          
-            <span>📑レポート</span>
-            <span className="report-arrow">▶</span>
-          
-          
+      <li className="report-item" onClick={() => onSelectView("calendar")}>
+       <span>🗓️ タイムシート</span>
+       <span className="report-arrow"></span>
+     </li>
+        <li onClick={() => setIsReportOpen(!isReportOpen)} ref={reportRef}>
+          <span>📑レポート</span>
+          <span className="report-arrow">▶</span>
 
           {isReportOpen && (
             <div className="menu-popup_report">
-              {/* 全ユーザーが使用可能なExport（My Data） */}
               <button
                 className="export-button"
                 onClick={() => setIsExportMyDataOpen(true)}
@@ -122,54 +120,80 @@ export default function Sidebar() {
               </button>
 
               {isExportMyDataOpen && (
-               <ExportModal 
-                 isOpen={isExportMyDataOpen}
-                 onClose={() => setIsExportMyDataOpen(false)}
-                 onExport={async (startDate, endDate, format) => {
-                  const userId = localStorage.getItem("userId") || ""; // 🔹 ユーザーIDを取得
-                  return await handleExport(startDate, endDate, format, userId); // 🔹 `await` を追加し `Promise<boolean>` を返す
-                }}
-               />
+                <ExportModal
+                  isOpen={isExportMyDataOpen}
+                  onClose={() => setIsExportMyDataOpen(false)}
+                  onExport={async (startDate, endDate, format) => {
+                    const userId = localStorage.getItem("userId") || "";
+                    return await handleExport(startDate, endDate, format, userId);
+                  }}
+                />
               )}
 
-              
-              
-              {/* 管理者のみ表示されるExport（all Data） */}
-              {userRole === "管理者" && (
-                <button
-                  className="export-button"
-                  onClick={() => setIsExportOpen(true)}
-                >
-                  📤 Export（all Data）
-                </button>
+              {(permissions.canExportAll || permissions.canViewReport || permissions.canViewUserReport || permissions.canViewDashboard) && (
+                <div>
+                  {permissions.canExportAll && (
+                    <button
+                      className="export-button"
+                      onClick={() => setIsExportOpen(true)}
+                    >
+                      📤 Export（all Data）
+                    </button>
+                  )}
+
+                  {permissions.canViewReport && (
+                    <button
+                      className="export-button"
+                      onClick={() => onSelectView("report")}
+                    >
+                      📊 予実レポート
+                    </button>
+                  )}
+
+                  {permissions.canViewUserReport && (
+                    <button
+                      className="export-button"
+                      onClick={() => onSelectView("user-report")}
+                    >
+                      👤 ユーザー別レポート
+                    </button>
+                  )}
+
+                  {permissions.canViewDashboard && (
+                    <button
+                      className="export-button"
+                      onClick={() => onSelectView("dashboard")}
+                    >
+                      📈 ユーザー月次ダッシュボード
+                    </button>
+                  )}
+                </div>
               )}
             </div>
           )}
         </li>
       </ul>
 
-      {/* Exportのモーダル */}
       {isExportMyDataOpen && (
-        <ExportModal 
+        <ExportModal
           isOpen={isExportMyDataOpen}
           onClose={() => setIsExportMyDataOpen(false)}
           onExport={async (startDate, endDate, format) => {
-            const userId = localStorage.getItem("userId") || ""; // 🔹 ユーザーIDを取得
-            return await handleExport(startDate, endDate, format, userId); // 🔹 `await` を追加し `Promise<boolean>` を返す
+            const userId = localStorage.getItem("userId") || "";
+            return await handleExport(startDate, endDate, format, userId);
           }}
         />
       )}
 
       {isExportOpen && (
-        <ExportModal 
+        <ExportModal
           isOpen={isExportOpen}
           onClose={() => setIsExportOpen(false)}
           onExport={(startDate, endDate, format) => handleExport(startDate, endDate, format)}
         />
       )}
 
-      {/* 📌 管理メニュー */}
-      <div 
+      <div
         className="settings"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         ref={menuRef}
@@ -181,7 +205,6 @@ export default function Sidebar() {
             <button className="pw-change-button" onClick={handleChangePassword}>
               🔑 PW変更
             </button>
-
             <button className="logout-button" onClick={handleLogout}>
               ログアウト
             </button>

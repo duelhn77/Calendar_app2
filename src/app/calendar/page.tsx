@@ -10,6 +10,9 @@ import { Modal } from "@/components/Modal";
 import Sidebar from "@/components/Sidebar";
 import {  EventResizeDoneArg } from "@fullcalendar/interaction"; 
 import "@/styles/calendar.css"; 
+import BudgetReportPage from "../budget-report/page"; // 🔹レポート画面
+import UserReportPage from "../user-report/page";
+import UserMonthlyDashboard from "../user-monthly-dashboard/page";
 
 export default function CalendarPage() {
   // const [isAuthenticated, setIsAuthenticated] = useState(
@@ -18,6 +21,7 @@ export default function CalendarPage() {
   // const handleLogout = () => {
 
   const router = useRouter();
+  const [currentView, setCurrentView] = useState<"calendar" | "report" | "user-report" | "dashboard">("calendar");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRange, setSelectedRange] = useState<{ start: Date; end: Date } | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);
@@ -293,11 +297,11 @@ export default function CalendarPage() {
 
 
 // ✅ エンゲージメントを取得したあとにイベントも取得
-useEffect(() => {
-  if (engagements.length > 0) {
+  useEffect(() => {
+    if (engagements.length > 0) {
     fetchEventsFromSheets();
   }
-}, [engagements]);
+  }, [engagements]);
 
 
   
@@ -312,8 +316,10 @@ useEffect(() => {
 
   return (
     <div style={{ display: "flex" }}>
-      <Sidebar />
+      <Sidebar onSelectView={setCurrentView}/>
       <div style={{ marginLeft: "220px", padding: "20px", width: "100%" }}>
+      {currentView === "calendar" ? (
+          <>
         <FullCalendar
           plugins={[timeGridPlugin, interactionPlugin]}
           initialView="timeGridWeek"
@@ -360,8 +366,16 @@ useEffect(() => {
             selectedEvent={selectedEvent}
           />
         )}
+      </>
+      ) : (
+          <>
+            
+          </>
+    )}
+     {currentView === "report" && <BudgetReportPage />}
+     {currentView === "user-report" && <UserReportPage />}
+     {currentView === "dashboard" && <UserMonthlyDashboard />}
       </div>
     </div>
   );
 }
-
