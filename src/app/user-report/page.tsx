@@ -89,7 +89,7 @@ export default function UserReportPage() {
         }, {} as { [key: string]: ReportRow })
       );
 
-  const totalBudget = groupedData.reduce((sum, row) => sum + row.budget, 0);
+//   const totalBudget = groupedData.reduce((sum, row) => sum + row.budget, 0);
   const totalActual = groupedData.reduce((sum, row) => sum + row.actual, 0);
 //   const totalDiff = totalActual - totalBudget;
 
