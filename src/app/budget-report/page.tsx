@@ -28,7 +28,11 @@ export default function BudgetReportPage() {
       try {
         const res = await fetch(`/api/fetchEngagements?userId=${userId}`);
         const json = await res.json();
-        const names = json.map((e: any) => e.name);
+        interface Engagement {
+            name: string;
+            color: string;
+          }
+          const names = (json as Engagement[]).map((e) => e.name);
         setEngagements(names);
         if (names.length > 0) {
           setSelectedEngagement(names[0]);

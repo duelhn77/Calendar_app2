@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 const SHEET_ID = process.env.SHEET_ID || "";
 
-export async function GET(req: Request) {
+export async function GET(_req: Request) {
   try {
     const auth = new google.auth.GoogleAuth({
       credentials: {

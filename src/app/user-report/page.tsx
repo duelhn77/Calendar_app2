@@ -36,7 +36,9 @@ export default function UserReportPage() {
       try {
         const res = await fetch(`/api/fetchEngagements?userId=${userId}`);
         const data = await res.json();
-        const engagementNames = Array.isArray(data) ? data.map((e: any) => e.name) : [];
+        const engagementNames = Array.isArray(data) 
+         ? (data as { name: string; color: string }[]).map((e) => e.name) 
+         : [];
         setEngagements(engagementNames);
       } catch (error) {
         console.error("❌ Engagement取得エラー:", error);
