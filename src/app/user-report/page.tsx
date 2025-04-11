@@ -1,4 +1,3 @@
-// src/app/user-report/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ interface ReportRow {
   userName: string;
   engagement: string;
   activity: string;
+  activityId?: string;
   budget: number;
   actual: number;
   month?: string;
@@ -79,7 +79,7 @@ export default function UserReportPage() {
       )
     : Object.values(
         filteredData.reduce((acc, row) => {
-          const key = `${row.userName}_${row.engagement}_${row.activity}`;
+          const key = `${row.userName}_${row.engagement}_${row.activityId}_${row.activity}`;
           if (!acc[key]) {
             acc[key] = { ...row, budget: 0, actual: 0 };
           }
@@ -87,11 +87,9 @@ export default function UserReportPage() {
           acc[key].actual += row.actual;
           return acc;
         }, {} as { [key: string]: ReportRow })
-      );
+      ).sort((a, b) => (a.activityId || "").localeCompare(b.activityId || "", "ja", { numeric: true }));
 
-//   const totalBudget = groupedData.reduce((sum, row) => sum + row.budget, 0);
   const totalActual = groupedData.reduce((sum, row) => sum + row.actual, 0);
-//   const totalDiff = totalActual - totalBudget;
 
   return (
     <div className="p-6">
@@ -149,48 +147,25 @@ export default function UserReportPage() {
               <tr>
                 <th className="border px-6 py-3">ユーザー</th>
                 <th className="border px-6 py-3">Engagement</th>
+                {viewMode === "activity" && <th className="border px-6 py-3">Activity ID</th>}
                 <th className="border px-6 py-3">{viewMode === "month" ? "月" : "Activity"}</th>
-                {/* <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>予算</th> */}
                 <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>実績</th>
-                {/* <th className="border px-6 py-3" style={{ width: "120px", textAlign: "right" }}>差分</th> */}
               </tr>
             </thead>
             <tbody>
-              {groupedData.map((row, idx) => {
-                // const diff = row.actual - row.budget;
-                return (
-                  <tr key={idx} className="align-top">
-                    <td className="border px-6 py-2">{row.userName}</td>
-                    <td className="border px-6 py-2">{row.engagement}</td>
-                    <td className="border px-6 py-2">{viewMode === "month" ? row.month : row.activity}</td>
-                    {/* <td className="border px-6 py-2" style={{ width: "120px", textAlign: "right" }}>{row.budget.toFixed(1)}h</td> */}
-                    <td className="border px-6 py-2" style={{ width: "120px", textAlign: "right" }}>{row.actual.toFixed(1)}h</td>
-                    {/* <td
-                      className="border px-6 py-2 font-semibold"
-                      style={{
-                        width: "120px",
-                        textAlign: "right",
-                        color: diff > 0 ? "red" : diff < 0 ? "green" : "black",
-                      }}
-                    >
-                      {(diff >= 0 ? "+" : "") + diff.toFixed(1)}h
-                    </td> */}
-                  </tr>
-                );
-              })}
+              {groupedData.map((row, idx) => (
+                <tr key={idx} className="align-top">
+                  <td className="border px-6 py-2">{row.userName}</td>
+                  <td className="border px-6 py-2">{row.engagement}</td>
+                  {viewMode === "activity" && <td className="border px-6 py-2">{row.activityId}</td>}
+                  <td className="border px-6 py-2">{viewMode === "month" ? row.month : row.activity}</td>
+                  <td className="border px-6 py-2" style={{ width: "120px", textAlign: "right" }}>{row.actual.toFixed(1)}h</td>
+                </tr>
+              ))}
 
-              <tr className="font-bold bg-gray-50" style={{
-                  borderTop: "2px solid black",
-                  borderBottom: "2px solid black",
-                  fontWeight: "bold",
-                  backgroundColor: "#aed4f6",
-                }}>
-                <td className="border px-6 py-2 text-center" colSpan={3}>合計</td>
-                {/* <td className="border px-6 py-2" style={{ textAlign: "right" }}>{totalBudget.toFixed(1)}h</td> */}
+              <tr className="font-bold bg-gray-50" style={{ borderTop: "2px solid black", borderBottom: "2px solid black", fontWeight: "bold", backgroundColor: "#aed4f6" }}>
+                <td className="border px-6 py-2 text-center" colSpan={viewMode === "month" ? 3 : 4}>合計</td>
                 <td className="border px-6 py-2" style={{ textAlign: "right" }}>{totalActual.toFixed(1)}h</td>
-                {/* <td className="border px-6 py-2" style={{ textAlign: "right", color: totalDiff > 0 ? "red" : totalDiff < 0 ? "green" : "black" }}>
-                  {(totalDiff >= 0 ? "+" : "") + totalDiff.toFixed(1)}h
-                </td> */}
               </tr>
             </tbody>
           </table>
