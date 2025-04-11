@@ -91,7 +91,7 @@ export default function UserReportPage() {
 
   const totalBudget = groupedData.reduce((sum, row) => sum + row.budget, 0);
   const totalActual = groupedData.reduce((sum, row) => sum + row.actual, 0);
-  const totalDiff = totalActual - totalBudget;
+//   const totalDiff = totalActual - totalBudget;
 
   return (
     <div className="p-6">
@@ -157,7 +157,7 @@ export default function UserReportPage() {
             </thead>
             <tbody>
               {groupedData.map((row, idx) => {
-                const diff = row.actual - row.budget;
+                // const diff = row.actual - row.budget;
                 return (
                   <tr key={idx} className="align-top">
                     <td className="border px-6 py-2">{row.userName}</td>

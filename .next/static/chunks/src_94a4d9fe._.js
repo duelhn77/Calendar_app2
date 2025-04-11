@@ -1479,7 +1479,7 @@ function UserReportPage() {
     }, {}));
     const totalBudget = groupedData.reduce((sum, row)=>sum + row.budget, 0);
     const totalActual = groupedData.reduce((sum, row)=>sum + row.actual, 0);
-    const totalDiff = totalActual - totalBudget;
+    //   const totalDiff = totalActual - totalBudget;
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         className: "p-6",
         children: [
@@ -1711,7 +1711,7 @@ function UserReportPage() {
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
                             children: [
                                 groupedData.map((row, idx)=>{
-                                    const diff = row.actual - row.budget;
+                                    // const diff = row.actual - row.budget;
                                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                         className: "align-top",
                                         children: [
