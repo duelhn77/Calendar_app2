@@ -11,5 +11,7 @@
   "/api/fetchUserBudgetActuals/route": "app/api/fetchUserBudgetActuals/route.js",
   "/api/fetchActivities/route": "app/api/fetchActivities/route.js",
   "/api/exportData/route": "app/api/exportData/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/budget-management/page": "app/budget-management/page.js",
+  "/api/updateBudget/route": "app/api/updateBudget/route.js"
 }

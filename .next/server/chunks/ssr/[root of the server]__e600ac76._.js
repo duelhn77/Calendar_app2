@@ -97,7 +97,7 @@ __turbopack_context__.s({
 });
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react.js [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ConfirmModal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ConfirmModal.tsx [app-ssr] (ecmascript)"); // 別途作成が必要
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ConfirmModal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ConfirmModal.tsx [app-ssr] (ecmascript)");
 "use client";
 ;
 ;
@@ -129,7 +129,7 @@ function BudgetEditor({ engagement }) {
                     return map;
                 }, {});
                 const activityList = Object.values(filtered).sort((a, b)=>a.activityId.localeCompare(b.activityId));
-                setActivities(activityList); // ✅ 型エラー解消
+                setActivities(activityList);
             } catch (err) {
                 console.error("❌ データ取得エラー:", err);
             }
@@ -172,7 +172,6 @@ function BudgetEditor({ engagement }) {
                 })
             });
             if (!res.ok) throw new Error("更新に失敗しました");
-            // 更新後再取得
             const updatedList = activities.map((act)=>act.activityId === selectedActivity ? {
                     ...act,
                     budget: Number(newBudget)
@@ -196,7 +195,7 @@ function BudgetEditor({ engagement }) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/BudgetEditor.tsx",
-                lineNumber: 114,
+                lineNumber: 116,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("table", {
@@ -211,7 +210,7 @@ function BudgetEditor({ engagement }) {
                                     children: "Activity ID"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/BudgetEditor.tsx",
-                                    lineNumber: 119,
+                                    lineNumber: 121,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -219,7 +218,7 @@ function BudgetEditor({ engagement }) {
                                     children: "Activity名"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/BudgetEditor.tsx",
-                                    lineNumber: 120,
+                                    lineNumber: 122,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -227,7 +226,7 @@ function BudgetEditor({ engagement }) {
                                     children: "予算（h）"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/BudgetEditor.tsx",
-                                    lineNumber: 121,
+                                    lineNumber: 123,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
@@ -235,18 +234,18 @@ function BudgetEditor({ engagement }) {
                                     children: "操作"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/BudgetEditor.tsx",
-                                    lineNumber: 122,
+                                    lineNumber: 124,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/BudgetEditor.tsx",
-                            lineNumber: 118,
+                            lineNumber: 120,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/BudgetEditor.tsx",
-                        lineNumber: 117,
+                        lineNumber: 119,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -264,8 +263,8 @@ function BudgetEditor({ engagement }) {
                                         children: act.activityId
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/BudgetEditor.tsx",
-                                        lineNumber: 128,
-                                        columnNumber: 7
+                                        lineNumber: 130,
+                                        columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         style: {
@@ -275,8 +274,8 @@ function BudgetEditor({ engagement }) {
                                         children: act.activityName
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/BudgetEditor.tsx",
-                                        lineNumber: 131,
-                                        columnNumber: 7
+                                        lineNumber: 133,
+                                        columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         style: {
@@ -295,13 +294,13 @@ function BudgetEditor({ engagement }) {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/BudgetEditor.tsx",
-                                            lineNumber: 135,
-                                            columnNumber: 9
+                                            lineNumber: 137,
+                                            columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/BudgetEditor.tsx",
-                                        lineNumber: 134,
-                                        columnNumber: 7
+                                        lineNumber: 136,
+                                        columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                         style: {
@@ -321,29 +320,29 @@ function BudgetEditor({ engagement }) {
                                             children: "更新"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/BudgetEditor.tsx",
-                                            lineNumber: 148,
-                                            columnNumber: 9
+                                            lineNumber: 150,
+                                            columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/BudgetEditor.tsx",
-                                        lineNumber: 147,
-                                        columnNumber: 7
+                                        lineNumber: 149,
+                                        columnNumber: 15
                                     }, this)
                                 ]
                             }, act.activityId, true, {
                                 fileName: "[project]/src/components/BudgetEditor.tsx",
-                                lineNumber: 127,
-                                columnNumber: 5
+                                lineNumber: 129,
+                                columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/src/components/BudgetEditor.tsx",
-                        lineNumber: 125,
+                        lineNumber: 127,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/BudgetEditor.tsx",
-                lineNumber: 116,
+                lineNumber: 118,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ConfirmModal$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
@@ -353,13 +352,13 @@ function BudgetEditor({ engagement }) {
                 message: "予算を更新してよろしいですか？"
             }, void 0, false, {
                 fileName: "[project]/src/components/BudgetEditor.tsx",
-                lineNumber: 168,
+                lineNumber: 169,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/BudgetEditor.tsx",
-        lineNumber: 113,
+        lineNumber: 115,
         columnNumber: 5
     }, this);
 }
@@ -392,7 +391,7 @@ function BudgetManagement() {
                 if (!Array.isArray(data)) {
                     throw new Error("APIレスポンスが配列ではありません: " + JSON.stringify(data));
                 }
-                const names = data.map((item)=>item.name || item.Engagement名);
+                const names = data.map((item)=>item.name || item.Engagement名).filter((name)=>typeof name === "string");
                 setEngagements(names);
             } catch (err) {
                 console.error("❌ Engagement取得エラー:", err);
@@ -408,7 +407,7 @@ function BudgetManagement() {
                 children: "💰 予算管理"
             }, void 0, false, {
                 fileName: "[project]/src/app/budget-management/page.tsx",
-                lineNumber: 34,
+                lineNumber: 42,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -419,7 +418,7 @@ function BudgetManagement() {
                         children: "Engagement を選択："
                     }, void 0, false, {
                         fileName: "[project]/src/app/budget-management/page.tsx",
-                        lineNumber: 36,
+                        lineNumber: 44,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -431,7 +430,7 @@ function BudgetManagement() {
                                 children: "-- 選択してください --"
                             }, void 0, false, {
                                 fileName: "[project]/src/app/budget-management/page.tsx",
-                                lineNumber: 41,
+                                lineNumber: 49,
                                 columnNumber: 11
                             }, this),
                             engagements.map((e)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -439,32 +438,32 @@ function BudgetManagement() {
                                     children: e
                                 }, e, false, {
                                     fileName: "[project]/src/app/budget-management/page.tsx",
-                                    lineNumber: 43,
+                                    lineNumber: 51,
                                     columnNumber: 13
                                 }, this))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/budget-management/page.tsx",
-                        lineNumber: 37,
+                        lineNumber: 45,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/budget-management/page.tsx",
-                lineNumber: 35,
+                lineNumber: 43,
                 columnNumber: 7
             }, this),
             selectedEngagement && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$BudgetEditor$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
                 engagement: selectedEngagement
             }, void 0, false, {
                 fileName: "[project]/src/app/budget-management/page.tsx",
-                lineNumber: 51,
+                lineNumber: 59,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/budget-management/page.tsx",
-        lineNumber: 33,
+        lineNumber: 41,
         columnNumber: 5
     }, this);
 }

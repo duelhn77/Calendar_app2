@@ -1,11 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ConfirmModal from "./ConfirmModal"; // 別途作成が必要
+import ConfirmModal from "./ConfirmModal";
 
 type ActivityRow = {
   activityId: string;
   activityName: string;
+  budget: number;
+};
+
+type RawBudgetRow = {
+  engagement: string;
+  activityId: string;
+  activity: string;
   budget: number;
 };
 
@@ -19,23 +26,20 @@ export default function BudgetEditor({ engagement }: Props) {
   const [selectedActivity, setSelectedActivity] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-
-
   useEffect(() => {
     console.log("🧪 isModalOpen の状態:", isModalOpen);
   }, [isModalOpen]);
-  
 
   // 1. データ取得
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await fetch("/api/fetchBudgetAndActuals");
-        const allData = await res.json();
+        const allData: RawBudgetRow[] = await res.json();
 
         const filtered = allData
-          .filter((d: any) => d.engagement === engagement)
-          .reduce((map: Record<string, ActivityRow>, row: any) => {
+          .filter((d) => d.engagement === engagement)
+          .reduce((map: Record<string, ActivityRow>, row) => {
             if (!map[row.activityId]) {
               map[row.activityId] = {
                 activityId: row.activityId,
@@ -46,11 +50,10 @@ export default function BudgetEditor({ engagement }: Props) {
             return map;
           }, {});
 
-          const activityList = Object.values(filtered).sort((a, b) =>
-            (a as ActivityRow).activityId.localeCompare((b as ActivityRow).activityId)
-          ) as ActivityRow[];
-          setActivities(activityList); // ✅ 型エラー解消
-          
+        const activityList = Object.values(filtered).sort((a, b) =>
+          a.activityId.localeCompare(b.activityId)
+        );
+        setActivities(activityList);
       } catch (err) {
         console.error("❌ データ取得エラー:", err);
       }
@@ -94,7 +97,6 @@ export default function BudgetEditor({ engagement }: Props) {
 
       if (!res.ok) throw new Error("更新に失敗しました");
 
-      // 更新後再取得
       const updatedList = activities.map((act) =>
         act.activityId === selectedActivity
           ? { ...act, budget: Number(newBudget) }
@@ -123,46 +125,45 @@ export default function BudgetEditor({ engagement }: Props) {
           </tr>
         </thead>
         <tbody>
-  {activities.map((act) => (
-    <tr key={act.activityId} style={{ lineHeight: "1", height: "28px" }}>
-      <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
-        {act.activityId}
-      </td>
-      <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
-        {act.activityName}
-      </td>
-      <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
-        <input
-          type="number"
-          value={editedBudgets[act.activityId] ?? act.budget.toString()}
-          onChange={(e) => handleChange(act.activityId, e.target.value)}
-          style={{
-            padding: "1px",
-            height: "20px",
-            fontSize: "12px",
-            width: "100px",
-          }}
-        />
-      </td>
-      <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
-        <button
-          onClick={() => handleUpdate(act.activityId)}
-          style={{
-            backgroundColor: "#3b82f6",
-            color: "white",
-            padding: "2px 8px",
-            fontSize: "12px",
-            borderRadius: "4px",
-            height: "24px",
-          }}
-        >
-          更新
-        </button>
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+          {activities.map((act) => (
+            <tr key={act.activityId} style={{ lineHeight: "1", height: "28px" }}>
+              <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
+                {act.activityId}
+              </td>
+              <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
+                {act.activityName}
+              </td>
+              <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
+                <input
+                  type="number"
+                  value={editedBudgets[act.activityId] ?? act.budget.toString()}
+                  onChange={(e) => handleChange(act.activityId, e.target.value)}
+                  style={{
+                    padding: "1px",
+                    height: "20px",
+                    fontSize: "12px",
+                    width: "100px",
+                  }}
+                />
+              </td>
+              <td style={{ border: "1px solid #ccc", padding: "2px 4px" }}>
+                <button
+                  onClick={() => handleUpdate(act.activityId)}
+                  style={{
+                    backgroundColor: "#3b82f6",
+                    color: "white",
+                    padding: "2px 8px",
+                    fontSize: "12px",
+                    borderRadius: "4px",
+                    height: "24px",
+                  }}
+                >
+                  更新
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
 
       <ConfirmModal
@@ -171,7 +172,6 @@ export default function BudgetEditor({ engagement }: Props) {
         onConfirm={confirmUpdate}
         message="予算を更新してよろしいですか？"
       />
-      
     </div>
   );
 }
