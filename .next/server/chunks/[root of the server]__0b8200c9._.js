@@ -297,6 +297,7 @@ async function GET(req) {
         const viewReportIndex = colIndex("ViewReport");
         const viewUserReportIndex = colIndex("ViewUserReport");
         const viewDashboardIndex = colIndex("ViewDashboard");
+        const manageBudgetIndex = colIndex("ManageBudget");
         if ([
             userIdIndex,
             exportAllIndex,
@@ -329,7 +330,8 @@ async function GET(req) {
             canExportAll: parseBool(row[exportAllIndex]),
             canViewReport: parseBool(row[viewReportIndex]),
             canViewUserReport: parseBool(row[viewUserReportIndex]),
-            canViewDashboard: parseBool(row[viewDashboardIndex])
+            canViewDashboard: parseBool(row[viewDashboardIndex]),
+            canManageBudget: parseBool(row[manageBudgetIndex])
         };
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(permissions);
     } catch (error) {

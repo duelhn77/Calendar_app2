@@ -21,7 +21,7 @@ export default function CalendarPage() {
   // const handleLogout = () => {
 
   const router = useRouter();
-  const [currentView, setCurrentView] = useState<"calendar" | "report" | "user-report" | "dashboard">("calendar");
+  const [currentView, setCurrentView] = useState<"calendar" | "report" | "user-report" | "dashboard"| "budget">("calendar");
   const [isOpen, setIsOpen] = useState(false);
   const [selectedRange, setSelectedRange] = useState<{ start: Date; end: Date } | null>(null);
   const [selectedEvent, setSelectedEvent] = useState<EventData | null>(null);

@@ -5,7 +5,11 @@
   "/calendar/page": "app/calendar/page.js",
   "/api/getUserPermissions/route": "app/api/getUserPermissions/route.js",
   "/api/fetchEngagements/route": "app/api/fetchEngagements/route.js",
+  "/api/userMonthlySummary/route": "app/api/userMonthlySummary/route.js",
   "/api/getEvents/route": "app/api/getEvents/route.js",
   "/api/fetchBudgetAndActuals/route": "app/api/fetchBudgetAndActuals/route.js",
-  "/api/fetchUserBudgetActuals/route": "app/api/fetchUserBudgetActuals/route.js"
+  "/api/fetchUserBudgetActuals/route": "app/api/fetchUserBudgetActuals/route.js",
+  "/api/fetchActivities/route": "app/api/fetchActivities/route.js",
+  "/api/exportData/route": "app/api/exportData/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }

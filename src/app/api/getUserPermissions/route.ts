@@ -39,6 +39,7 @@ export async function GET(req: Request) {
     const viewReportIndex = colIndex("ViewReport");
     const viewUserReportIndex = colIndex("ViewUserReport");
     const viewDashboardIndex = colIndex("ViewDashboard");
+    const manageBudgetIndex = colIndex("ManageBudget");
 
     if ([userIdIndex, exportAllIndex, viewReportIndex, viewUserReportIndex, viewDashboardIndex].some(idx => idx === -1)) {
       return NextResponse.json({ error: "必要なカラムが見つかりません" }, { status: 500 });
@@ -64,6 +65,7 @@ export async function GET(req: Request) {
       canViewReport: parseBool(row[viewReportIndex]),
       canViewUserReport: parseBool(row[viewUserReportIndex]),
       canViewDashboard: parseBool(row[viewDashboardIndex]),
+      canManageBudget: parseBool(row[manageBudgetIndex]),
     };
 
     return NextResponse.json(permissions);

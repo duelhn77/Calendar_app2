@@ -3,7 +3,7 @@ import { FaCog } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import ExportModal from "./ExportModal";
 
-export type SidebarView = "calendar" | "report" | "user-report" | "dashboard";
+export type SidebarView = "calendar" | "report" | "user-report" | "dashboard" | "budget";
 
 type SidebarProps = {
   onSelectView: (view: SidebarView) => void;
@@ -19,6 +19,7 @@ export default function Sidebar({ onSelectView }: SidebarProps) {
     canViewReport: false,
     canViewUserReport: false,
     canViewDashboard: false,
+    canManageBudget: false,
   });
   const router = useRouter();
 
@@ -202,6 +203,12 @@ export default function Sidebar({ onSelectView }: SidebarProps) {
         <span>管理メニュー</span>
         {isMenuOpen && (
           <div className="menu-popup">
+            {permissions.canManageBudget && (
+          <button className="budget-button" onClick={() => router.push("/budget-management")}>
+           💰 予算管理
+          </button>
+          )}
+
             <button className="pw-change-button" onClick={handleChangePassword}>
               🔑 PW変更
             </button>
@@ -210,6 +217,8 @@ export default function Sidebar({ onSelectView }: SidebarProps) {
             </button>
           </div>
         )}
+        
+
       </div>
     </div>
   );
