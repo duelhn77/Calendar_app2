@@ -1016,8 +1016,7 @@ function BudgetReportPage() {
         fetchActivities();
         fetchEngagements();
     }, []);
-    const allMonths = Array.from(new Set(reportData.filter((r)=>r.engagement === selectedEngagement && r.actual > 0) // ✅ 条件を限定
-    .map((r)=>r.month))).sort((a, b)=>new Date(a).getTime() - new Date(b).getTime());
+    const allMonths = Array.from(new Set(reportData.filter((r)=>r.engagement === selectedEngagement && r.actual > 0).map((r)=>r.month))).sort((a, b)=>new Date(a).getTime() - new Date(b).getTime());
     const filteredReportData = reportData.filter((row)=>{
         if (row.engagement !== selectedEngagement) return false;
         const time = new Date(row.month || "").getTime();
@@ -1026,7 +1025,6 @@ function BudgetReportPage() {
         return time >= from && time <= to;
     });
     const activityMap = {};
-    // ✅ まずマスタを基に予定時間だけ登録（実績は0）
     activityMaster.forEach((row)=>{
         if (row.engagement !== selectedEngagement) return;
         const key = `${row.activityId}_${row.activity}`;
@@ -1038,7 +1036,6 @@ function BudgetReportPage() {
             actual: 0
         };
     });
-    // ✅ 実績データを加算
     filteredReportData.forEach((row)=>{
         const key = `${row.activityId}_${row.activity}`;
         if (activityMap[key]) {
@@ -1058,7 +1055,7 @@ function BudgetReportPage() {
                 children: "📊 予実レポート"
             }, void 0, false, {
                 fileName: "[project]/src/app/budget-report/page.tsx",
-                lineNumber: 121,
+                lineNumber: 124,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1067,14 +1064,11 @@ function BudgetReportPage() {
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                className: "block mb-2 font-semibold",
-                                style: {
-                                    fontSize: "18px"
-                                },
+                                className: "block mb-2 font-semibold text-lg",
                                 children: "Engagement（会社）："
                             }, void 0, false, {
                                 fileName: "[project]/src/app/budget-report/page.tsx",
-                                lineNumber: 125,
+                                lineNumber: 127,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1087,7 +1081,7 @@ function BudgetReportPage() {
                                         children: "-- 選択してください --"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                        lineNumber: 131,
+                                        lineNumber: 133,
                                         columnNumber: 13
                                     }, this),
                                     engagements.map((e)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1095,32 +1089,29 @@ function BudgetReportPage() {
                                             children: e
                                         }, e, false, {
                                             fileName: "[project]/src/app/budget-report/page.tsx",
-                                            lineNumber: 133,
+                                            lineNumber: 135,
                                             columnNumber: 15
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/budget-report/page.tsx",
-                                lineNumber: 126,
+                                lineNumber: 128,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/budget-report/page.tsx",
-                        lineNumber: 124,
+                        lineNumber: 126,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                className: "block mb-2 font-semibold",
-                                style: {
-                                    fontSize: "18px"
-                                },
+                                className: "block mb-2 font-semibold text-lg",
                                 children: "開始月："
                             }, void 0, false, {
                                 fileName: "[project]/src/app/budget-report/page.tsx",
-                                lineNumber: 139,
+                                lineNumber: 141,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1133,7 +1124,7 @@ function BudgetReportPage() {
                                         children: "-- 指定なし --"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                        lineNumber: 145,
+                                        lineNumber: 147,
                                         columnNumber: 13
                                     }, this),
                                     allMonths.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1141,32 +1132,29 @@ function BudgetReportPage() {
                                             children: m
                                         }, m, false, {
                                             fileName: "[project]/src/app/budget-report/page.tsx",
-                                            lineNumber: 147,
+                                            lineNumber: 149,
                                             columnNumber: 15
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/budget-report/page.tsx",
-                                lineNumber: 140,
+                                lineNumber: 142,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/budget-report/page.tsx",
-                        lineNumber: 138,
+                        lineNumber: 140,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                className: "block mb-2 font-semibold",
-                                style: {
-                                    fontSize: "18px"
-                                },
+                                className: "block mb-2 font-semibold text-lg",
                                 children: "終了月："
                             }, void 0, false, {
                                 fileName: "[project]/src/app/budget-report/page.tsx",
-                                lineNumber: 153,
+                                lineNumber: 155,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -1179,7 +1167,7 @@ function BudgetReportPage() {
                                         children: "-- 指定なし --"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                        lineNumber: 159,
+                                        lineNumber: 161,
                                         columnNumber: 13
                                     }, this),
                                     allMonths.map((m)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -1187,25 +1175,25 @@ function BudgetReportPage() {
                                             children: m
                                         }, m, false, {
                                             fileName: "[project]/src/app/budget-report/page.tsx",
-                                            lineNumber: 161,
+                                            lineNumber: 163,
                                             columnNumber: 15
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/budget-report/page.tsx",
-                                lineNumber: 154,
+                                lineNumber: 156,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/budget-report/page.tsx",
-                        lineNumber: 152,
+                        lineNumber: 154,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/budget-report/page.tsx",
-                lineNumber: 123,
+                lineNumber: 125,
                 columnNumber: 7
             }, this),
             selectedEngagement && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -1219,7 +1207,7 @@ function BudgetReportPage() {
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/app/budget-report/page.tsx",
-                        lineNumber: 169,
+                        lineNumber: 171,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1228,81 +1216,58 @@ function BudgetReportPage() {
                             className: "min-w-full text-sm border-collapse border",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("thead", {
-                                    style: {
-                                        borderTop: "2px solid black",
-                                        borderBottom: "2px solid black",
-                                        fontWeight: "bold",
-                                        backgroundColor: "#aed4f6"
-                                    },
+                                    className: "bg-blue-200 font-bold",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                className: "border px-4 py-2",
-                                                style: {
-                                                    width: "100px"
-                                                },
+                                                className: "border px-4 py-2 w-[100px]",
                                                 children: "Activity ID"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/budget-report/page.tsx",
-                                                lineNumber: 175,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                className: "border px-4 py-2",
-                                                style: {
-                                                    width: "250px"
-                                                },
-                                                children: "Activity"
-                                            }, void 0, false, {
-                                                fileName: "[project]/src/app/budget-report/page.tsx",
-                                                lineNumber: 176,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                className: "border px-4 py-2",
-                                                style: {
-                                                    textAlign: "right",
-                                                    width: "120px"
-                                                },
-                                                children: "予定時間"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/budget-report/page.tsx",
                                                 lineNumber: 177,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                className: "border px-4 py-2",
-                                                style: {
-                                                    textAlign: "right",
-                                                    width: "120px"
-                                                },
-                                                children: "実績時間"
+                                                className: "border px-4 py-2 w-[250px]",
+                                                children: "Activity"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/budget-report/page.tsx",
                                                 lineNumber: 178,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
-                                                className: "border px-4 py-2",
-                                                style: {
-                                                    textAlign: "right",
-                                                    width: "120px"
-                                                },
-                                                children: "差分"
+                                                className: "border px-4 py-2 text-right w-[120px]",
+                                                children: "予定時間"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/budget-report/page.tsx",
                                                 lineNumber: 179,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                className: "border px-4 py-2 text-right w-[120px]",
+                                                children: "実績時間"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/budget-report/page.tsx",
+                                                lineNumber: 180,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("th", {
+                                                className: "border px-4 py-2 text-right w-[120px]",
+                                                children: "差分"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/app/budget-report/page.tsx",
+                                                lineNumber: 181,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                        lineNumber: 174,
+                                        lineNumber: 176,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/budget-report/page.tsx",
-                                    lineNumber: 173,
+                                    lineNumber: 175,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tbody", {
@@ -1316,7 +1281,7 @@ function BudgetReportPage() {
                                                         children: row.activityId
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                                        lineNumber: 187,
+                                                        lineNumber: 189,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1324,41 +1289,34 @@ function BudgetReportPage() {
                                                         children: row.activity
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                                        lineNumber: 188,
+                                                        lineNumber: 190,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                        className: "border px-4 py-2",
-                                                        style: {
-                                                            textAlign: "right"
-                                                        },
+                                                        className: "border px-4 py-2 text-right",
                                                         children: [
                                                             row.budget.toFixed(2),
                                                             " h"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                                        lineNumber: 189,
+                                                        lineNumber: 191,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                        className: "border px-4 py-2",
-                                                        style: {
-                                                            textAlign: "right"
-                                                        },
+                                                        className: "border px-4 py-2 text-right",
                                                         children: [
                                                             row.actual.toFixed(2),
                                                             " h"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                                        lineNumber: 190,
+                                                        lineNumber: 192,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                        className: "border px-4 py-2 font-bold",
+                                                        className: "border px-4 py-2 font-bold text-right",
                                                         style: {
-                                                            textAlign: "right",
                                                             color: diff > 0 ? "red" : diff < 0 ? "green" : "black"
                                                         },
                                                         children: [
@@ -1367,29 +1325,24 @@ function BudgetReportPage() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/src/app/budget-report/page.tsx",
-                                                        lineNumber: 191,
+                                                        lineNumber: 193,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, idx, true, {
                                                 fileName: "[project]/src/app/budget-report/page.tsx",
-                                                lineNumber: 186,
+                                                lineNumber: 188,
                                                 columnNumber: 21
                                             }, this);
                                         }),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("tr", {
-                                            className: "bg-gray-100 font-semibold",
-                                            style: {
-                                                borderTop: "2px solid black",
-                                                borderBottom: "2px solid black",
-                                                backgroundColor: "#aed4f6"
-                                            },
+                                            className: "bg-blue-200 font-semibold border-t-2 border-b-2 border-black",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
                                                     className: "border px-4 py-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/budget-report/page.tsx",
-                                                    lineNumber: 202,
+                                                    lineNumber: 205,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
@@ -1397,41 +1350,34 @@ function BudgetReportPage() {
                                                     children: "合計"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/budget-report/page.tsx",
-                                                    lineNumber: 203,
+                                                    lineNumber: 206,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                    className: "border px-4 py-2",
-                                                    style: {
-                                                        textAlign: "right"
-                                                    },
+                                                    className: "border px-4 py-2 text-right",
                                                     children: [
                                                         totalBudget.toFixed(2),
                                                         " h"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/budget-report/page.tsx",
-                                                    lineNumber: 204,
+                                                    lineNumber: 207,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                    className: "border px-4 py-2",
-                                                    style: {
-                                                        textAlign: "right"
-                                                    },
+                                                    className: "border px-4 py-2 text-right",
                                                     children: [
                                                         totalActual.toFixed(2),
                                                         " h"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/budget-report/page.tsx",
-                                                    lineNumber: 205,
+                                                    lineNumber: 208,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("td", {
-                                                    className: "border px-4 py-2",
+                                                    className: "border px-4 py-2 text-right",
                                                     style: {
-                                                        textAlign: "right",
                                                         color: totalActual - totalBudget > 0 ? "red" : totalActual - totalBudget < 0 ? "green" : "black"
                                                     },
                                                     children: [
@@ -1440,30 +1386,30 @@ function BudgetReportPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/app/budget-report/page.tsx",
-                                                    lineNumber: 206,
+                                                    lineNumber: 209,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/app/budget-report/page.tsx",
-                                            lineNumber: 201,
+                                            lineNumber: 204,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/app/budget-report/page.tsx",
-                                    lineNumber: 182,
+                                    lineNumber: 184,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/budget-report/page.tsx",
-                            lineNumber: 172,
+                            lineNumber: 174,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/app/budget-report/page.tsx",
-                        lineNumber: 171,
+                        lineNumber: 173,
                         columnNumber: 11
                     }, this)
                 ]
@@ -1471,7 +1417,7 @@ function BudgetReportPage() {
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/budget-report/page.tsx",
-        lineNumber: 120,
+        lineNumber: 123,
         columnNumber: 5
     }, this);
 }

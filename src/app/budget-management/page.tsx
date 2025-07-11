@@ -2,6 +2,11 @@
 import { useEffect, useState } from "react";
 import BudgetEditor from "@/components/BudgetEditor";
 
+type EngagementResponse = {
+  name?: string;
+  Engagement名?: string;
+};
+
 export default function BudgetManagement() {
   const [engagements, setEngagements] = useState<string[]>([]);
   const [selectedEngagement, setSelectedEngagement] = useState<string>("");
@@ -11,21 +16,24 @@ export default function BudgetManagement() {
       try {
         const userId = localStorage.getItem("userId");
         if (!userId) throw new Error("ユーザーIDが未設定です");
-    
+
         const res = await fetch(`/api/fetchEngagements?userId=${userId}`);
-        const data = await res.json();
-    
+        const data: EngagementResponse[] = await res.json();
+
         if (!Array.isArray(data)) {
           throw new Error("APIレスポンスが配列ではありません: " + JSON.stringify(data));
         }
-    
-        const names = data.map((item: any) => item.name || item.Engagement名);
-        setEngagements(names);
+
+        const names = data
+  .map((item: EngagementResponse) => item.name || item.Engagement名)
+  .filter((name): name is string => typeof name === "string");
+
+setEngagements(names);
       } catch (err) {
         console.error("❌ Engagement取得エラー:", err);
       }
     };
-    
+
     fetchEngagements();
   }, []);
 

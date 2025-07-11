@@ -18,6 +18,13 @@ type ActivityMasterRow = {
   budget: number;
 };
 
+type RawActivityRow = {
+  engagement: string;
+  activity_id: string;
+  activity: string;
+  budget?: number;
+};
+
 export default function BudgetReportPage() {
   const [reportData, setReportData] = useState<ReportRow[]>([]);
   const [activityMaster, setActivityMaster] = useState<ActivityMasterRow[]>([]);
@@ -37,8 +44,8 @@ export default function BudgetReportPage() {
     const fetchActivities = async () => {
       try {
         const res = await fetch("/api/fetchActivities");
-        const raw = await res.json();
-        const mapped: ActivityMasterRow[] = raw.map((row: any) => ({
+        const raw: RawActivityRow[] = await res.json();
+        const mapped: ActivityMasterRow[] = raw.map((row) => ({
           engagement: row.engagement,
           activityId: row.activity_id,
           activity: row.activity,
@@ -69,14 +76,12 @@ export default function BudgetReportPage() {
   }, []);
 
   const allMonths = Array.from(
-  new Set(
-    reportData
-      .filter(r => r.engagement === selectedEngagement && r.actual > 0) // ✅ 条件を限定
-      .map(r => r.month)
-  )
-).sort((a, b) => new Date(a!).getTime() - new Date(b!).getTime());
-
-
+    new Set(
+      reportData
+        .filter(r => r.engagement === selectedEngagement && r.actual > 0)
+        .map(r => r.month)
+    )
+  ).sort((a, b) => new Date(a!).getTime() - new Date(b!).getTime());
 
   const filteredReportData = reportData.filter((row) => {
     if (row.engagement !== selectedEngagement) return false;
@@ -88,7 +93,6 @@ export default function BudgetReportPage() {
 
   const activityMap: { [key: string]: ReportRow } = {};
 
-  // ✅ まずマスタを基に予定時間だけ登録（実績は0）
   activityMaster.forEach((row) => {
     if (row.engagement !== selectedEngagement) return;
     const key = `${row.activityId}_${row.activity}`;
@@ -101,7 +105,6 @@ export default function BudgetReportPage() {
     };
   });
 
-  // ✅ 実績データを加算
   filteredReportData.forEach((row) => {
     const key = `${row.activityId}_${row.activity}`;
     if (activityMap[key]) {
@@ -119,10 +122,9 @@ export default function BudgetReportPage() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">📊 予実レポート</h1>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mb-8">
         <div>
-          <label className="block mb-2 font-semibold" style={{ fontSize: "18px" }}>Engagement（会社）：</label>
+          <label className="block mb-2 font-semibold text-lg">Engagement（会社）：</label>
           <select
             value={selectedEngagement}
             onChange={(e) => setSelectedEngagement(e.target.value)}
@@ -136,7 +138,7 @@ export default function BudgetReportPage() {
         </div>
 
         <div>
-          <label className="block mb-2 font-semibold" style={{ fontSize: "18px" }}>開始月：</label>
+          <label className="block mb-2 font-semibold text-lg">開始月：</label>
           <select
             value={startMonth}
             onChange={(e) => setStartMonth(e.target.value)}
@@ -150,7 +152,7 @@ export default function BudgetReportPage() {
         </div>
 
         <div>
-          <label className="block mb-2 font-semibold" style={{ fontSize: "18px" }}>終了月：</label>
+          <label className="block mb-2 font-semibold text-lg">終了月：</label>
           <select
             value={endMonth}
             onChange={(e) => setEndMonth(e.target.value)}
@@ -170,13 +172,13 @@ export default function BudgetReportPage() {
 
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm border-collapse border">
-              <thead style={{ borderTop: "2px solid black", borderBottom: "2px solid black", fontWeight: "bold", backgroundColor: "#aed4f6" }}>
+              <thead className="bg-blue-200 font-bold">
                 <tr>
-                  <th className="border px-4 py-2" style={{ width: "100px" }}>Activity ID</th>
-                  <th className="border px-4 py-2" style={{ width: "250px" }}>Activity</th>
-                  <th className="border px-4 py-2" style={{ textAlign: "right", width: "120px" }}>予定時間</th>
-                  <th className="border px-4 py-2" style={{ textAlign: "right", width: "120px" }}>実績時間</th>
-                  <th className="border px-4 py-2" style={{ textAlign: "right", width: "120px" }}>差分</th>
+                  <th className="border px-4 py-2 w-[100px]">Activity ID</th>
+                  <th className="border px-4 py-2 w-[250px]">Activity</th>
+                  <th className="border px-4 py-2 text-right w-[120px]">予定時間</th>
+                  <th className="border px-4 py-2 text-right w-[120px]">実績時間</th>
+                  <th className="border px-4 py-2 text-right w-[120px]">差分</th>
                 </tr>
               </thead>
               <tbody>
@@ -186,30 +188,33 @@ export default function BudgetReportPage() {
                     <tr key={idx}>
                       <td className="border px-4 py-2 text-center">{row.activityId}</td>
                       <td className="border px-4 py-2 text-center">{row.activity}</td>
-                      <td className="border px-4 py-2" style={{ textAlign: "right" }}>{row.budget.toFixed(2)} h</td>
-                      <td className="border px-4 py-2" style={{ textAlign: "right" }}>{row.actual.toFixed(2)} h</td>
-                      <td className="border px-4 py-2 font-bold" style={{
-                        textAlign: "right",
-                        color: diff > 0 ? "red" : diff < 0 ? "green" : "black",
-                      }}>
+                      <td className="border px-4 py-2 text-right">{row.budget.toFixed(2)} h</td>
+                      <td className="border px-4 py-2 text-right">{row.actual.toFixed(2)} h</td>
+                      <td
+                        className="border px-4 py-2 font-bold text-right"
+                        style={{
+                          color: diff > 0 ? "red" : diff < 0 ? "green" : "black",
+                        }}
+                      >
                         {(diff >= 0 ? "+" : "") + diff.toFixed(2)} h
                       </td>
                     </tr>
                   );
                 })}
-
-                <tr className="bg-gray-100 font-semibold" style={{ borderTop: "2px solid black", borderBottom: "2px solid black", backgroundColor: "#aed4f6" }}>
+                <tr className="bg-blue-200 font-semibold border-t-2 border-b-2 border-black">
                   <td className="border px-4 py-2"></td>
                   <td className="border px-4 py-2 text-center">合計</td>
-                  <td className="border px-4 py-2" style={{ textAlign: "right" }}>{totalBudget.toFixed(2)} h</td>
-                  <td className="border px-4 py-2" style={{ textAlign: "right" }}>{totalActual.toFixed(2)} h</td>
-                  <td className="border px-4 py-2" style={{
-                    textAlign: "right",
-                    color:
-                      totalActual - totalBudget > 0 ? "red"
-                        : totalActual - totalBudget < 0 ? "green"
-                        : "black",
-                  }}>
+                  <td className="border px-4 py-2 text-right">{totalBudget.toFixed(2)} h</td>
+                  <td className="border px-4 py-2 text-right">{totalActual.toFixed(2)} h</td>
+                  <td
+                    className="border px-4 py-2 text-right"
+                    style={{
+                      color:
+                        totalActual - totalBudget > 0 ? "red" :
+                        totalActual - totalBudget < 0 ? "green" :
+                        "black",
+                    }}
+                  >
                     {(totalActual - totalBudget >= 0 ? "+" : "") + (totalActual - totalBudget).toFixed(2)} h
                   </td>
                 </tr>
